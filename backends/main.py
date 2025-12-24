@@ -1,11 +1,12 @@
 import shutil
 from pathlib import Path
-from fastapi import FastAPI, Body, Depends, UploadFile, File
+from fastapi import FastAPI, UploadFile, File
+from backends.constants.mongo_client import collection
 import json
-
-from data_handling.insert_schema_into_mongo import insert_json_into_mongo
-from data_handling.json_schema_gpt import extract_data
-from data_handling.pdf_to_llm_context import pdf_to_context
+from backends.data_handling.insert_schema_into_mongo import insert_json_into_mongo
+from backends.data_handling.json_schema_gpt import extract_data
+from backends.data_handling.pdf_to_llm_context import pdf_to_context
+from bson.json_util import dumps
 
 # Instantiate an instance of the FastAPI client
 web_server = FastAPI()
@@ -17,7 +18,10 @@ print("sys.path:", sys.path)
 
 @web_server.get("/api/companies")
 async def companies():
-    # Fetch companies and slugs and send tem
+    # Fetch company names and slugs and send them over
+    result = collection.find({}, {"_id": 0, "name": 1, "slug": 1})
+    json_dump = list(result)
+    return json_dump
 
 
 @web_server.post("/api/companies/addData")

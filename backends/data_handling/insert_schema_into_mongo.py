@@ -1,15 +1,11 @@
 # Takes JSON and throws it into mongodb
-from pymongo import MongoClient
 from dotenv import load_dotenv
-import os
-
+import backends.constants.mongo_client as mongo_client
 load_dotenv(verbose=True)
 
 
 def insert_json_into_mongo(data):
-    client = MongoClient(os.getenv("MONGODB_INSTANCE_URL"))
-    database = client[os.getenv("MONGODB_DATABASE")]
-    collection = database[os.getenv("MONGODB_COLLECTION_NAME")]
+    collection = mongo_client.collection
 
     update_query = {"name": data["company_name"]}
 
