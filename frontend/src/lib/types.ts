@@ -3,10 +3,6 @@ export type SeriesPoint = {
     value: number;
 };
 
-export type CommitmentSeries = {
-    data: SeriesPoint[];
-};
-
 export type EnvironmentalMetricValue = {
     current: {
         data: SeriesPoint[];
@@ -33,7 +29,7 @@ export type GovernmentSocialMetrics = {
 export type CompanyESG = {
     slug: string;
     name: string;
-
+    industry: string;
     environmental: EnvironmentalMetrics;
     social: GovernmentSocialMetrics;
     governance: GovernmentSocialMetrics;
