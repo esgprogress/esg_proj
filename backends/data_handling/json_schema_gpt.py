@@ -51,32 +51,11 @@ def extract_data(path_to_context_file: str):
     Since this data will be used in a database to track commitments, please use common English names and reduce all mentions of a common mineral, element or compound to one aggregated value. 
     Any specific products used by the company must not be mentioned in the output, as we need to **compare values across years**, and adding names in causes issues with comparison.
     
-    The "company_type" field must have one of the following string values:
-    1. Technology
-    2. Consumer Discretionary
-    3. Energy
-    4. Communication Services
-    5. Automotive
-    6. Healthcare
-    7. Financials
-    8. Consumer Staples
-    9. Industrials
-    10. Materials
-    11. Utilities
-    12. Oil & Gas / Diversified
-    13. Banking
-    14. Telecom
-    15. IT Services
-    16. Financial Services
-    17. Construction
-    18. FMCG
-    19. Automobile
-    20. Auto / Farm
-    21. Pharmaceuticals
-    22. Cement
-    23. Power
-    24. Oil & Gas
-    25. Steel
+    For social and governance questions, strictly follow the given marking rubric, and rate the company from 0 to 3 on each factor:
+    0: Measures have not been taken, or haven't been disclosed in the report,
+    1: A concrete policy exists, but no specific information on implementation has been mentioned in the report.
+    2: A concrete policy exists, and concrete details on implementation have been provided.
+    3: A concrete policy exists, and the company has provided details on measured outcomes, remediation and steps to improve further. 
     """ + data
 
     # Step 3: generate response

@@ -20,5 +20,28 @@
     "Climate-related Awards",
     "SDGs Committed To",
     "Third-party Environmental Accreditation Frameworks used."
+  ],
+  "social": [
+    "Human Rights Due Diligence",
+    "Grievance and Redressal Mechanisms for Internal Teams",
+    "Living Wage, Fair Pay and Working Conditions",
+    "Freedom of Association and Collective Bargaining",
+    "Occupational Health and Safety Training and Reporting",
+    "Skills Development and Just Transition Support",
+    "Supply Chain Labour Standards and Monitoring",
+    "Community Engagement and Impact Management",
+    "Product Responsibility"
+  ],
+  "governance": [
+    "Board Oversight of Sustainability",
+    "Management Accountability and Incentives",
+    "Integration of ESG into Enterprise Risk Management",
+    "Code of Conduct and Training",
+    "Anti-Corruption and Bribery Controls",
+    "Whistleblowing System",
+    "Political Engagement and Lobbying Transparency",
+    "Supplier Relationship Governance and Responsible Procurement",
+    "Payment Practices and Treatment of Small and Medium Enterprises",
+    "Data Quality, Controls and Assurance Readiness"
   ]
 }
