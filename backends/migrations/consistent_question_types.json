@@ -1,26 +1,28 @@
 {
-  "environmental_quantitative": [
-    "Scope 1 Emissions (Absolute)",
-    "Scope 1 Emissions (Intensity)",
-    "Scope 2 Emissions",
-    "Scope 3 Emissions",
-    "Volume of carbon offsets used (in tCO2e)",
-    "Type of Carbon Offsets used",
-    "Percentage of total emissions covered by offsets",
-    "Renewable energy usage (as a percentage of total use)",
-    "Fugitive Emissions (as a percentage of total emissions)",
-    "Methane intensity"
-  ],
-  "environmental_qualitative": [
-    "TCFD-Aligned Disclosures",
-    "1.5 degrees Celsius Scenario Analysis",
-    "Material Risks Identified",
-    "Supplier Climate Expectations",
-    "Climate-related Ratings",
-    "Climate-related Awards",
-    "SDGs Committed To",
-    "Third-party Environmental Accreditation Frameworks used."
-  ],
+  "environmental": {
+    "quantitative": [
+      "Scope 1 Emissions (Absolute)",
+      "Scope 1 Emissions (Intensity)",
+      "Scope 2 Emissions",
+      "Scope 3 Emissions",
+      "Volume of carbon offsets used (in tCO2e)",
+      "Type of Carbon Offsets used",
+      "Percentage of total emissions covered by offsets",
+      "Renewable energy usage (as a percentage of total use)",
+      "Fugitive Emissions (as a percentage of total emissions)",
+      "Methane intensity"
+    ],
+    "qualitative": [
+      "TCFD-Aligned Disclosures",
+      "1.5 degrees Celsius Scenario Analysis",
+      "Material Risks Identified",
+      "Supplier Climate Expectations",
+      "Climate-related Ratings",
+      "Climate-related Awards",
+      "SDGs Committed To",
+      "Third-party Environmental Accreditation Frameworks used."
+    ]
+  },
   "social": [
     "Human Rights Due Diligence",
     "Grievance and Redressal Mechanisms for Internal Teams",
@@ -43,5 +45,223 @@
     "Supplier Relationship Governance and Responsible Procurement",
     "Payment Practices and Treatment of Small and Medium Enterprises",
     "Data Quality, Controls and Assurance Readiness"
-  ]
+  ],
+  "tech": {
+    "quantitative": [
+      "Energy Consumption per Unit Produced (kWh)",
+      "Abatement Coverage for High-GWP Process Gases (%)",
+      "Manufacturing Yield / Scrap Rate",
+      "Product Energy-Efficiency (on average)",
+      "Hazardous Chemical Usage Reduction"
+    ],
+    "qualitative": []
+  },
+  "consumer-discretionary": {
+    "quantitative": [
+      "Energy Intensity of Owned Operations",
+      "Sustainable Material Usage in Products (%)",
+      "Unsold Inventory Write-off or Destruction",
+      "Tier-1 Supplier Environmental Audit Coverage (%)",
+      "Circular Business Model Revenue Share (%)"
+    ],
+    "qualitative": []
+  },
+  "energy": {
+    "quantitative": [
+      "Lifecycle Emissions Intensity per MWh",
+      "Low-Carbon Energy Share in Total Output",
+      "Methane Emissions Intensity"
+    ],
+    "qualitative": [
+      "Capital Allocation Split by Technology Type",
+      "Asset Retirement / Repowering Schedule Disclosure"
+    ]
+  },
+  "comms-services": {
+    "quantitative": [
+      "Energy Consumption of Content Delivery and Networks (in MWh)",
+      "PUE Range"
+    ],
+    "qualitative": [
+      "Decoupling of Data Traffic and Energy Growths",
+      "Physical Climate Risk Assessment Coverage of Infrastructure",
+      "Infrastructure Modernization Progress"
+    ]
+  },
+  "auto": {
+    "quantitative": [
+      "Fleet-Average Emissions of New Vehicles (CO2e/km)",
+      "Sales Mix by Powertrain (%)",
+      "Recycled Material Usage (%)"
+    ],
+    "qualitative": [
+      "Average Weight Trend Per Segment",
+      "Battery Sourcing Transparency and Traceability Coverage"
+    ]
+  },
+  "health": {
+    "quantitative": [
+      "Energy Intensity per Occupied Bed (kWh)",
+      "Single-Use Medical Product Intensity",
+      "Waste Treatment Method Breakdown"
+    ],
+    "qualitative": [
+      "Anaesthetic Gas Emissions Disclosure",
+      "Climatic Resilience of Facilities"
+    ]
+  },
+  "finance": {
+    "quantitative": [
+      "Climate-related Assets Under Management (%)",
+      "Exposure to Carbon-Intensive Sectors (%)",
+      "Funds/Products with Climate Objectives (%)"
+    ],
+    "qualitative": [
+      "Climate Risk Integration Into Investment Decisions",
+      "Stewardship Engagement on Climate"
+    ]
+  },
+  "consumer-staple": {
+    "quantitative": [
+      "Energy Intensity of Manufacturing Operations (MWh)",
+      "Sustainable Packaging Share (%)",
+      "Supplier Environmental Performance Coverage (%)"
+    ],
+    "qualitative": [
+      "Food Loss and Waste Rate",
+      "Climate Risk Exposure of Key Agricultural Inputs"
+    ]
+  },
+  "industrials": {
+    "quantitative": [
+      "Low-Emissions Product Share (%)",
+      "Aftermarket Retrofit and Efficiency Services Revenue Share (%)"
+    ],
+    "qualitative": [
+      "Energy Intensity of Production",
+      "Product Efficiency Improvement Disclosure",
+      "Materials Efficiency and Waste Reduction Performance"
+    ]
+  },
+  "materials": {
+    "quantitative": [
+      "Energy Intensity Per Tonne Produced (gCO2e/kWh)",
+      "Fossil-based Feedstock Dependency (%)",
+      "By-Product Reuse / Recycling Rate (%)",
+      "Low-Carbon or Bio-Based Product Share (%)"
+    ],
+    "qualitative": [
+      "Process Emissions Reduction Initiatives"
+    ]
+  },
+  "utils": {
+    "quantitative": [
+      "Generation Emissions Intensity (gCO2e/kWh)",
+      "Generation Mix By Source (%)",
+      "Grid Losses (%)"
+    ],
+    "qualitative": [
+      "Coal and Gas Capacity Retirement Timelines",
+      "Grid Resilience and Adaptation Investments Disclosed"
+    ]
+  },
+  "oil-gas": {
+    "quantitative": [
+      "Methane Emissions Intensity",
+      "Routine Flaring Intensity",
+      "Average Carbon Intensity of Production"
+    ],
+    "qualitative": [
+      "Upstream versus Transition Investment Split",
+      "Decommissioning and Remediation Provisioning Adequacy"
+    ]
+  },
+  "banking": {
+    "quantitative": [
+      "Financed Emissions Coverage (%)",
+      "Exposure to Carbon-Intensive Sectors (%)",
+      "Green and Sustainability-Linked Lending Share (%)"
+    ],
+    "qualitative": [
+      "Client Transition Plan Assessment Coverage",
+      "Climate Risk Integration into Credit Decisions"
+    ]
+  },
+  "telecom": {
+    "quantitative": [
+      "Energy Consumption Per Data Unit (kWh/GB)"
+    ],
+    "qualitative": [
+      "Network Modernization Progress",
+      "Energy-Efficiency Initiatives in Networks",
+      "Climate Resilience of Network Assets",
+      "Backup Power Dependency (Diesel vs Alternatives)"
+    ]
+  },
+  "it-services": {
+    "quantitative": [
+      "Energy Intensity Per Revenue Unit (gCO2e/kWh per USD)",
+      "Revenue from Client Decarbonization / Efficiency Services (USD)",
+      "Remote Delivery and Digital Substitution Rate (%)"
+    ],
+    "qualitative": [
+      "Data Center Efficiency Disclosure",
+      "Business Travel Emissions Trend"
+    ]
+  },
+  "construction": {
+    "quantitative": [
+      "Low-Carbon Material Usage (%)",
+      "Construction Waste Diversion Rate",
+      "Energy-Efficient or Green-Certified Buildings Delivered"
+    ],
+    "qualitative": [
+      "Embodied Carbon Disclosures at Project Level",
+      "Use of Modular / Prefabricated Construction Methods"
+    ]
+  },
+  "fmcg": {
+    "quantitative": [
+      "Energy Intensity of Manufacturing",
+      "Sustainable Ingredient Sourcing (%)",
+      "Packaging Circularity (%)"
+    ],
+    "qualitative": [
+      "Cold-Chain Energy Intensity",
+      "Supplier Climate RIsk and Adaptation Assessments"
+    ]
+  },
+  "pharma": {
+    "quantitative": [
+      "Energy Intensity per unit output",
+      "Solvent Recovery Rate (%)"
+    ],
+    "qualitative": [
+      "API Manufacturing Process Efficiency Disclosures",
+      "Cold-chain Dependency of Product Portfolio",
+      "Waste and Effluent Treatment Effectiveness"
+    ]
+  },
+  "cement": {
+    "quantitative": [
+      "Clinker-to-Cement Ratio",
+      "Alternative Fuel Substitution Rate",
+      "Thermal Energy Intensity",
+      "Low-Carbon and Blended Cement Sales Share (%)"
+    ],
+    "qualitative": [
+      "Process Emissions Reduction Initiatives (including CCUS Pilots)"
+    ]
+  },
+  "steel": {
+    "quantitative": [
+      "Production Route Mix (BF-BOF vs EAF)",
+      "Scrap Input Ratio",
+      "Low-Carbon Steel Production Share (%)",
+      "Energy Intensity by Production Route"
+    ],
+    "qualitative": [
+      "Process Innovation and Pilot Deployment Disclosures"
+    ]
+  }
 }
