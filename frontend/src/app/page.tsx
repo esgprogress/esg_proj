@@ -7,13 +7,11 @@ import {
     ShieldCheck,
     Database,
     BarChart3,
-    Globe2,
     FileText,
     Sparkles,
     ArrowRight,
     ExternalLink,
     CheckCircle2,
-    GitFork,
     LineChart,
     Layers,
     Lock,
@@ -34,7 +32,6 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 import TopBar from "@/components/TopBar";
 
 const EXAMPLE_COMPANIES = [

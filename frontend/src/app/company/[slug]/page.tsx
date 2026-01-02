@@ -6,6 +6,7 @@ import {SocialGovernanceSection} from "@/app/company/[slug]/components/SocialGov
 import {EnvironmentalQualitativeSection} from "@/app/company/[slug]/components/EnvironmentQualitativeSection";
 import TopBar from "@/components/TopBar";
 import React from "react";
+import CompanyFooter from "@/app/company/[slug]/components/CompanyFooter";
 
 export default async function CompanyPage({
                                               params,
@@ -31,7 +32,7 @@ export default async function CompanyPage({
                         <SocialGovernanceSection social={company.social} governance={company.governance} />
                 </div>
             </main>
-
+        <CompanyFooter/>
         </>
     )
 }

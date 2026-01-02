@@ -64,42 +64,53 @@ export default function DashboardPage() {
                     </header>
 
                     {Object.entries(grouped).map(([industry, items]) => (
-                        <section key={industry} className="space-y-1">
+                        <section key={industry} className="space-y-3">
                             <h2 className="text-xl font-semibold">{industry}</h2>
 
-                            <div className="relative h-[260px] overflow-hidden">
-                                <AnimatePresence>
-                                    {items.slice(0, 6).map((company, index) => (
-                                        <motion.div
-                                            key={company.slug}
-                                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                                            transition={{ duration: 0.4, delay: index * 0.05 }}
-                                            className="absolute"
-                                            style={{
-                                                left: index * 24,
-                                                top: index * 16,
-                                                zIndex: 10 - index,
-                                            }}
-                                        >
-                                            <Link href={`/company/${company.slug}`}>
-                                                <Card className="w-64 cursor-pointer rounded-2xl shadow-lg backdrop-blur hover:shadow-xl transition">
-                                                    <CardContent className="space-y-2 p-3">
-                                                        <div>
-                                                            <h3 className="text-lg font-semibold">{company.name}</h3>
-                                                            <p className="text-sm text-muted-foreground">{company.industry}</p>
-                                                        </div>
-                                                        <div className="flex items-center justify-between">
-                                                            <Badge variant="secondary">{company.country}</Badge>
-                                                            <span className="text-xs text-muted-foreground">View →</span>
-                                                        </div>
-                                                    </CardContent>
-                                                </Card>
-                                            </Link>
-                                        </motion.div>
-                                    ))}
-                                </AnimatePresence>
+                            <div className="relative">
+                                <div
+                                    className="
+                flex gap-4 overflow-x-auto pb-4
+                snap-x snap-mandatory
+                scrollbar-thin scrollbar-thumb-muted
+            "
+                                >
+                                    <AnimatePresence>
+                                        {items.map((company, index) => (
+                                            <motion.div
+                                                key={company.slug}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -20 }}
+                                                transition={{ duration: 0.3, delay: index * 0.04 }}
+                                                className="snap-start shrink-0"
+                                            >
+                                                <Link href={`/company/${company.slug}`}>
+                                                    <Card className="w-64 cursor-pointer rounded-2xl shadow-lg backdrop-blur hover:shadow-xl transition">
+                                                        <CardContent className="space-y-2 p-3">
+                                                            <div>
+                                                                <h3 className="text-lg font-semibold">
+                                                                    {company.name}
+                                                                </h3>
+                                                                <p className="text-sm text-muted-foreground">
+                                                                    {company.industry}
+                                                                </p>
+                                                            </div>
+                                                            <div className="flex items-center justify-between">
+                                                                <Badge variant="secondary">
+                                                                    {company.country}
+                                                                </Badge>
+                                                                <span className="text-xs text-muted-foreground">
+                                            View →
+                                        </span>
+                                                            </div>
+                                                        </CardContent>
+                                                    </Card>
+                                                </Link>
+                                            </motion.div>
+                                        ))}
+                                    </AnimatePresence>
+                                </div>
                             </div>
                         </section>
                     ))}

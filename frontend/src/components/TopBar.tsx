@@ -14,7 +14,7 @@ export default function TopBar() {
                         <Globe2 className="h-5 w-5" />
                     </div>
                     <div>
-                        <div className="text-sm font-semibold leading-none">Open ESG Tracker</div>
+                        <div className="text-sm font-semibold leading-none">ESGProgress - An Open ESG Tracker</div>
                         <div className="text-xs text-muted-foreground">Open-source ESG intelligence from public data</div>
                     </div>
                 </div>
