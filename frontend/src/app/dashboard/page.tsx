@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import TopBar from "@/components/TopBar";
+import BottomBar from "@/components/BottomBar";
 
 export interface CompanySummary {
     name: string
@@ -116,6 +117,7 @@ export default function DashboardPage() {
                     ))}
                 </div>
             </div>
+            <BottomBar/>
         </div>
     )
 }

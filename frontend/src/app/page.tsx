@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import TopBar from "@/components/TopBar";
+import BottomBar from "@/components/BottomBar";
 
 const EXAMPLE_COMPANIES = [
     { name: "Unilever", sector: "Consumer", region: "Global", score: 78, trend: "+3" },
@@ -237,28 +238,7 @@ export default function RootLayout() {
 
                                 <Separator className="my-5" />
 
-                                <div className="grid gap-3 md:grid-cols-3">
-                                    <div className="rounded-2xl border p-3">
-                                        <div className="text-xs text-muted-foreground">Evidence coverage</div>
-                                        <div className="mt-2 text-sm font-medium">High</div>
-                                        <div className="mt-1 text-xs text-muted-foreground">Most claims backed with sources</div>
-                                    </div>
-                                    <div className="rounded-2xl border p-3">
-                                        <div className="text-xs text-muted-foreground">Commitment vs action</div>
-                                        <div className="mt-2 text-sm font-medium">Action-forward</div>
-                                        <div className="mt-1 text-xs text-muted-foreground">Clear progress signals detected</div>
-                                    </div>
-                                    <div className="rounded-2xl border p-3">
-                                        <div className="text-xs text-muted-foreground">Update frequency</div>
-                                        <div className="mt-2 text-sm font-medium">Weekly</div>
-                                        <div className="mt-1 text-xs text-muted-foreground">Public sources re-checked regularly</div>
-                                    </div>
-                                </div>
-
                                 <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-                                    <Button className="rounded-2xl" onClick={() => window.alert("Company page placeholder")}
-                                    >Open company page</Button
-                                    >
                                     <Button
                                         variant="outline"
                                         className="rounded-2xl"
@@ -396,209 +376,6 @@ export default function RootLayout() {
                 </div>
             </section>
 
-            {/* Dashboards */}
-            <section className="mx-auto max-w-6xl px-4 py-10">
-                <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-                    <div>
-                        <div className="text-sm font-semibold">Dashboards</div>
-                        <h2 className="mt-2 text-3xl font-semibold tracking-tight">Explore by company, sector, or theme.</h2>
-                        <p className="mt-2 text-muted-foreground">
-                            Compare commitments vs action signals, see timelines, and download open data for analysis.
-                        </p>
-                    </div>
-                    <div className="flex flex-col gap-2 sm:flex-row">
-                        <Button variant="outline" className="rounded-2xl" onClick={() => window.alert("Dataset download placeholder")}
-                        >Download dataset</Button
-                        >
-                        <Button className="rounded-2xl" onClick={() => window.alert("Open dashboards placeholder")}
-                        >Open dashboards <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                    </div>
-                </div>
-
-                <Card className="mt-6 rounded-3xl shadow-sm">
-                    <CardContent className="p-5">
-                        <Tabs defaultValue="companies">
-                            <TabsList className="grid w-full grid-cols-3 rounded-2xl">
-                                <TabsTrigger value="companies" className="rounded-2xl">Companies</TabsTrigger>
-                                <TabsTrigger value="themes" className="rounded-2xl">Themes</TabsTrigger>
-                                <TabsTrigger value="methods" className="rounded-2xl">Methods</TabsTrigger>
-                            </TabsList>
-
-                            <TabsContent value="companies" className="mt-5">
-                                <div className="flex flex-col gap-3 md:flex-row md:items-center">
-                                    <div className="flex-1">
-                                        <div className="text-xs text-muted-foreground">Filter</div>
-                                        <div className="mt-2 flex flex-wrap items-center gap-2">
-                                            {sectors.map((s) => (
-                                                <Button
-                                                    key={s}
-                                                    size="sm"
-                                                    variant={sector === s ? "default" : "outline"}
-                                                    className="rounded-full"
-                                                    onClick={() => setSector(s)}
-                                                >
-                                                    {s}
-                                                </Button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="text-xs text-muted-foreground">Region</div>
-                                        <div className="mt-2 flex flex-wrap items-center gap-2">
-                                            {regions.map((r) => (
-                                                <Button
-                                                    key={r}
-                                                    size="sm"
-                                                    variant={region === r ? "default" : "outline"}
-                                                    className="rounded-full"
-                                                    onClick={() => setRegion(r)}
-                                                >
-                                                    {r}
-                                                </Button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="mt-5 grid gap-4 md:grid-cols-3">
-                                    {filtered.map((c) => (
-                                        <Card key={c.name} className="rounded-3xl shadow-sm">
-                                            <CardContent className="p-5">
-                                                <div className="flex items-start justify-between gap-3">
-                                                    <div>
-                                                        <div className="text-sm font-semibold">{c.name}</div>
-                                                        <div className="mt-1 text-xs text-muted-foreground">
-                                                            {c.sector} • {c.region}
-                                                        </div>
-                                                    </div>
-                                                    <Badge variant="secondary" className="rounded-full">
-                                                        {c.score}/100
-                                                    </Badge>
-                                                </div>
-                                                <div className="mt-4 flex items-center justify-between rounded-2xl border p-3">
-                                                    <div className="text-xs text-muted-foreground">Momentum</div>
-                                                    <div className="text-sm font-medium">{c.trend}</div>
-                                                </div>
-                                                <div className="mt-4 grid gap-2">
-                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                                        <CheckCircle2 className="h-4 w-4" /> Evidence-linked metrics
-                                                    </div>
-                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                                        <CheckCircle2 className="h-4 w-4" /> Timeline of actions
-                                                    </div>
-                                                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                                        <CheckCircle2 className="h-4 w-4" /> Plain-language summary
-                                                    </div>
-                                                </div>
-                                                <Button className="mt-5 w-full rounded-2xl" onClick={() => window.alert("Open company placeholder")}
-                                                >View profile</Button
-                                                >
-                                            </CardContent>
-                                        </Card>
-                                    ))}
-                                </div>
-                            </TabsContent>
-
-                            <TabsContent value="themes" className="mt-5">
-                                <div className="grid gap-4 md:grid-cols-3">
-                                    {[
-                                        { title: "Climate & emissions", desc: "Targets, SBTi status, scope disclosures, progress" },
-                                        { title: "Energy & renewables", desc: "Renewable share, PPAs, efficiency programs" },
-                                        { title: "Water & waste", desc: "Water risk, circularity, waste diversion" },
-                                        { title: "People & safety", desc: "Diversity, labor practices, safety incidents" },
-                                        { title: "Supply chain", desc: "Supplier standards, audits, traceability" },
-                                        { title: "Governance", desc: "Board oversight, policies, controversies" },
-                                    ].map((t) => (
-                                        <Card key={t.title} className="rounded-3xl shadow-sm">
-                                            <CardContent className="p-5">
-                                                <div className="flex items-start gap-3">
-                                                    <div className="rounded-2xl border p-2">
-                                                        <BarChart3 className="h-4 w-4" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="text-sm font-semibold">{t.title}</div>
-                                                        <div className="mt-1 text-sm text-muted-foreground">{t.desc}</div>
-                                                    </div>
-                                                </div>
-                                                <Button
-                                                    variant="outline"
-                                                    className="mt-5 w-full rounded-2xl"
-                                                    onClick={() => window.alert("Theme placeholder")}
-                                                >
-                                                    Explore theme <ArrowRight className="ml-2 h-4 w-4" />
-                                                </Button>
-                                            </CardContent>
-                                        </Card>
-                                    ))}
-                                </div>
-                            </TabsContent>
-
-                            <TabsContent value="methods" className="mt-5">
-                                <div className="grid gap-4 md:grid-cols-2">
-                                    <Card className="rounded-3xl shadow-sm">
-                                        <CardContent className="p-5">
-                                            <div className="flex items-start gap-3">
-                                                <div className="rounded-2xl border p-2">
-                                                    <ShieldCheck className="h-4 w-4" />
-                                                </div>
-                                                <div>
-                                                    <div className="text-sm font-semibold">Methodology is public</div>
-                                                    <p className="mt-1 text-sm text-muted-foreground">
-                                                        Scoring and labeling prioritize: evidence coverage, recency, specificity, and consistency.
-                                                        Community can propose improvements.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <Separator className="my-5" />
-                                            <div className="grid gap-2 text-sm text-muted-foreground">
-                                                <div className="flex items-center gap-2">
-                                                    <CheckCircle2 className="h-4 w-4" /> Evidence-first scoring
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <CheckCircle2 className="h-4 w-4" /> Clear assumptions & caveats
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <CheckCircle2 className="h-4 w-4" /> Reproducible pipelines
-                                                </div>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-
-                                    <Card className="rounded-3xl shadow-sm">
-                                        <CardContent className="p-5">
-                                            <div className="flex items-start gap-3">
-                                                <div className="rounded-2xl border p-2">
-                                                    <Database className="h-4 w-4" />
-                                                </div>
-                                                <div>
-                                                    <div className="text-sm font-semibold">Open data, open APIs</div>
-                                                    <p className="mt-1 text-sm text-muted-foreground">
-                                                        Downloadable datasets + API endpoints for researchers, journalists, students, and builders.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <Separator className="my-5" />
-                                            <div className="grid gap-2 text-sm text-muted-foreground">
-                                                <div className="flex items-center gap-2">
-                                                    <CheckCircle2 className="h-4 w-4" /> Company profiles
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <CheckCircle2 className="h-4 w-4" /> Metrics & timelines
-                                                </div>
-                                                <div className="flex items-center gap-2">
-                                                    <CheckCircle2 className="h-4 w-4" /> Evidence links
-                                                </div>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </div>
-                            </TabsContent>
-                        </Tabs>
-                    </CardContent>
-                </Card>
-            </section>
-
             {/* How it works */}
             <section className="mx-auto max-w-6xl px-4 py-10">
                 <div className="grid gap-6 md:grid-cols-3">
@@ -677,28 +454,7 @@ export default function RootLayout() {
                 </Card>
             </section>
 
-            {/* Footer */}
-            <footer className="border-t">
-                <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 md:flex-row md:items-center md:justify-between">
-                    <div className="text-sm text-muted-foreground">
-                        © {new Date().getFullYear()} Open ESG Tracker • Built in public • Data from public sources
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                        <Button variant="ghost" className="rounded-xl" onClick={() => window.alert("About placeholder")}
-                        >About</Button
-                        >
-                        <Button variant="ghost" className="rounded-xl" onClick={() => window.alert("Methodology placeholder")}
-                        >Methodology</Button
-                        >
-                        <Button variant="ghost" className="rounded-xl" onClick={() => window.alert("Data policy placeholder")}
-                        >Data policy</Button
-                        >
-                        <Button variant="ghost" className="rounded-xl" onClick={() => window.alert("Contact placeholder")}
-                        >Contact</Button
-                        >
-                    </div>
-                </div>
-            </footer>
+            <BottomBar/>
         </div>
     );
 }

@@ -1,6 +1,8 @@
 import React from "react"
+import {Button} from "@/components/ui/button";
+import Link from "next/link";
 
-export default function CompanyFooter() {
+export default function BottomBar() {
     return (
         <footer className="mt-16 border-t border-muted/40 pt-6">
         <div className="mx-auto max-w-5xl px-4 text-sm text-muted-foreground space-y-3">
@@ -29,7 +31,11 @@ export default function CompanyFooter() {
     Last updated: January 2026
     </span>
     </div>
-
+            <Link href='/disclaimer/legal'>
+                <Button className="rounded-xl">
+                    Full Disclaimer
+                </Button>
+            </Link>
     </div>
     </footer>
 )
