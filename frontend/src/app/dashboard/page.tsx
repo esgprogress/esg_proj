@@ -55,16 +55,16 @@ export default function DashboardPage() {
             <TopBar/>
 
             <div className="mx-auto max-w-6xl px-4 py-14">
-                <div className="flex flex-col justify-center space-y-4"> {/* space-y-6 → space-y-4 */}
-                    <header className="space-y-1"> {/* space-y-2 → space-y-1 */}
+                <div className="flex flex-col justify-center space-y-4">
+                    <header className="space-y-1">
                         <h1 className="text-3xl font-semibold tracking-tight">ESG Dashboard</h1>
                         <p className="text-muted-foreground">
-                            Browse companies by category and explore detailed ESG performance
+                            Browse companies by industry and explore detailed ESG performance
                         </p>
                     </header>
 
                     {Object.entries(grouped).map(([industry, items]) => (
-                        <section key={industry} className="space-y-1"> {/* space-y-2 → space-y-1 */}
+                        <section key={industry} className="space-y-1">
                             <h2 className="text-xl font-semibold">{industry}</h2>
 
                             <div className="relative h-[260px] overflow-hidden">
@@ -85,7 +85,7 @@ export default function DashboardPage() {
                                         >
                                             <Link href={`/company/${company.slug}`}>
                                                 <Card className="w-64 cursor-pointer rounded-2xl shadow-lg backdrop-blur hover:shadow-xl transition">
-                                                    <CardContent className="space-y-2 p-3"> {/* space-y-3 → space-y-2, p-4 → p-3 */}
+                                                    <CardContent className="space-y-2 p-3">
                                                         <div>
                                                             <h3 className="text-lg font-semibold">{company.name}</h3>
                                                             <p className="text-sm text-muted-foreground">{company.industry}</p>

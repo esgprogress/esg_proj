@@ -1,8 +1,10 @@
 import shutil
 from pathlib import Path
 from fastapi import FastAPI, UploadFile, File
+from fastapi.params import Depends
 from starlette.middleware.cors import CORSMiddleware
 
+from backends.auth.auth0_auth import get_user, security
 from backends.constants.mongo_client import data_collection, industries_collection, questions_collection
 import json
 from backends.data_handling.insert_schema_into_mongo import insert_json_into_mongo
@@ -49,7 +51,7 @@ async def fetchQuestions(industry: str):
 
 
 @web_server.put("/api/addQuestionSpecific", summary="Add new question to env list of industry", description="Given a particular industry, add a new question to the list of industry-specific questions that will be asked")
-async def addQuestionSpecific(industry: str, question: str, qualitative: bool):
+async def addQuestionSpecific(industry: str, question: str, qualitative: bool, user=Depends(get_user(security))):
     if (qualitative):
         questions_collection.update_one({"industry": industry}, {"$push": {"qualitative": question}}, upsert=True)
     else:
@@ -61,7 +63,7 @@ async def addCategory(industry: str):
     industries_collection.update_one({}, {"$push": {"industries": industry}}, upsert=True)
 
 @web_server.put("/api/addQuestionGeneral", summary="Add new generic question", description="Add a new generic question to the list of questions that every company is subjected to")
-async def addQuestionGeneral(type: str, question: str, qualitative: bool = False):
+async def addQuestionGeneral(type: str, question: str, qualitative: bool = False, user=Depends(get_user(security))):
     if (type == "social" or type == "governance"):
         questions_collection.update_one({"industry": "general"}, {"$push": {type: question}}, upsert=True)
     else:
@@ -76,7 +78,7 @@ async def removeCategory(industry: str):
     industries_collection.delete_one({}, {"$pull": {"industries": industry}}, upsert=True)
 
 @web_server.delete("/api/removeQuestionGeneral", summary="Remove general question", description="Remove general question from the list")
-async def removeQuestionGeneral(type: str, question: str, qualitative: bool = False):
+async def removeQuestionGeneral(type: str, question: str, qualitative: bool = False, user=Depends(get_user(security))):
     if (type == "social" or type == "governance"):
         questions_collection.delete_one({"industry": "general"}, {"$pull": {type: question}}, upsert=True)
     else:
@@ -86,7 +88,7 @@ async def removeQuestionGeneral(type: str, question: str, qualitative: bool = Fa
             questions_collection.delete_one({"industry": "general"}, {"$pull": {"environmental.quantitative": question}}, upsert=True)
 
 @web_server.delete("/api/removeQuestionSpecific", summary="Remove specific question", description="Remove industry-specific question from the list")
-async def removeQuestionSpecific(industry: str, question: str, qualitative: bool):
+async def removeQuestionSpecific(industry: str, question: str, qualitative: bool, user=Depends(get_user(security))):
     if (qualitative):
         questions_collection.delete_one({"industry": industry}, {"$pull": {"qualitative": question}}, upsert=True)
     else:
@@ -109,7 +111,7 @@ async def fetchCompany(company_slug: str):
 
 
 @web_server.post("/api/companies/addData", summary="Upload new report", description="Upload new report and autofill details into database")
-async def add_data(file: UploadFile = File(...)):
+async def add_data(file: UploadFile = File(...), user=Depends(get_user(security))):
     file_path = UPLOAD_DIR / file.filename
 
     with file_path.open("wb") as buffer:
