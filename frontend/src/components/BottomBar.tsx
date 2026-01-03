@@ -28,7 +28,7 @@ export default function BottomBar() {
             ESGProgress.org advises you seek a financial or legal professional for advice.
     </span>
     <span>
-    Last updated: January 2026
+    Last updated: 1 January 2026
     </span>
     </div>
             <Link href='/disclaimer/legal'>

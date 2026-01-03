@@ -1,19 +1,28 @@
+import logging
 import shutil
+import os
 from pathlib import Path
 from fastapi import FastAPI, UploadFile, File
 from fastapi.params import Depends
 from starlette.middleware.cors import CORSMiddleware
 
-from backends.auth.auth0_auth import get_user, auth0
+from backends.auth.auth0_auth import auth0
 from backends.constants.mongo_client import data_collection, industries_collection, questions_collection
 import json
 from backends.data_handling.insert_schema_into_mongo import insert_json_into_mongo
 from backends.data_handling.json_schema_gpt import extract_data
 from backends.data_handling.pdf_to_llm_context import pdf_to_context
+from backends.log.logging_config import logging_configuration
+from backends.log.logging_middleware import RouterLoggingMiddleware
 
+# Manage logging dir
+os.makedirs("logs", exist_ok=True)
+
+# Set logging
+logging.config.dictConfig(logging_configuration)
 
 # Instantiate an instance of the FastAPI client
-web_server = FastAPI()
+web_server = FastAPI(title="ESGProject")
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 import sys, os
@@ -26,6 +35,11 @@ web_server.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+web_server.add_middleware(
+    RouterLoggingMiddleware,
+    logger=logging.getLogger(__name__),
 )
 
 @web_server.get("/api/fetchIndustries", summary="Retrieve industries", description="Retrieve all currently-supported industries")

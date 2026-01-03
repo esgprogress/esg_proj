@@ -11,7 +11,7 @@ export default function DisclaimerPage() {
         Disclaimer
         </h1>
         <p className="text-sm text-muted-foreground">
-        Last updated: January 2026
+        Last updated: 1 January 2026
     </p>
     </header>
 
