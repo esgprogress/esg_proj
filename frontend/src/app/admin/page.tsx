@@ -89,7 +89,7 @@ export default function UploadPage() {
                                     const formData = new FormData()
                                     formData.append("file", file)
 
-                                    const res = await fetch("http://localhost:80/api/companies/addData", {
+                                    const res = await fetch("http://localhost:3001/api/companies/addData", {
                                         method: "POST",
                                         body: formData,
                                         headers: {

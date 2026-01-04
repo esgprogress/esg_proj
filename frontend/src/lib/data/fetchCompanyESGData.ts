@@ -1,7 +1,7 @@
 export async function fetchCompanyESG(slug: string) {
     try {
         const res = await fetch(
-            `http://localhost:80/api/fetchCompany?company_slug=${slug}`,
+            `http://localhost:3001/api/fetchCompany?company_slug=${slug}`,
             { cache: "no-store" } // important for dashboards
         )
 
