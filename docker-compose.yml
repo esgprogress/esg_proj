@@ -28,7 +28,7 @@ services:
   migrations:
     build:
       context: ./backends
-      dockerfile: migrations.Dockerfile
+      dockerfile: migrations/migrations.Dockerfile
     env_file:
       - .env.production
     depends_on:
