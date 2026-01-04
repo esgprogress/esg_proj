@@ -1,4 +1,4 @@
-db = db.getSiblingDB("myapp");
+db = db.getSiblingDB("companies_statistics");
 
 db.createUser({
   user: "esg_proj_readonly",
