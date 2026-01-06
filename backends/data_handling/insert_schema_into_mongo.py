@@ -6,7 +6,7 @@ load_dotenv(verbose=True)
 def insert_json_into_mongo(data, company_name):
     collection = mongo_client.data_collection
 
-    if company_name != "--- New Company ---":
+    if company_name != "undefined":
         actual_company_name = company_name
     else:
         actual_company_name = data["company_name"]

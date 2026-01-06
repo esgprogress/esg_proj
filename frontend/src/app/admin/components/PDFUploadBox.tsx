@@ -90,10 +90,6 @@ export default function PDFUploadBox({companies}: {companies: string[]}) {
                                     const file = e.target.files?.[0]
                                     if (!file) return
 
-                                    if (fileName !== "--- New Company ---") {
-                                        const updatedFile = new File([file], fileName, {type: file.type})
-                                    }
-
                                     const formData = new FormData()
                                     formData.append("file", file)
 
