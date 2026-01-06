@@ -15,3 +15,4 @@ export type EnvironmentQualitativeData = {
     year: number
     comment: string
 }
+

@@ -52,10 +52,6 @@ const EXAMPLE_SOURCES = [
     { label: "Open datasets & public registries", icon: Database },
 ];
 
-function classNames(...classes: Array<string | false | null | undefined>) {
-    return classes.filter(Boolean).join(" ");
-}
-
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
     return (
         <Card className="rounded-2xl shadow-sm">

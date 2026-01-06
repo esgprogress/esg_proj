@@ -30,7 +30,7 @@ export default function DashboardPage() {
 
     useEffect(() => {
         async function load() {
-            const res = await fetch("http://localhost:3001/api/companies")
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies`)
             const json = await res.json()
 
             const data = Array.isArray(json) ? json : json.data
