@@ -354,6 +354,8 @@ async def fetchCompany(company_slug: str):
 
 @web_server.post("/api/companies/addData", summary="Upload new report", description="Upload new report and autofill details into database")
 async def add_data(company_name: str, file: UploadFile = File(...), claims: dict = Depends(auth0.require_auth)):
+    logger.warning("add_data CALLED")
+
     file_path = UPLOAD_DIR / file.filename
 
     with file_path.open("wb") as buffer:
