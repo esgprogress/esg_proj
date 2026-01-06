@@ -5,15 +5,13 @@ meta {
 }
 
 post {
-  url: http://localhost:80/api/companies/addData?industry=technology&question=Scope 2 Emissions&qualitative=True
+  url: http://localhost:80/api/companies/addData?company_name=undefined
   body: multipartForm
   auth: bearer
 }
 
 params:query {
-  industry: technology
-  question: Scope 2 Emissions
-  qualitative: True
+  company_name: undefined
 }
 
 body:multipart-form {
