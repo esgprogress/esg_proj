@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import PDFUploadBox from "@/app/admin/components/PDFUploadBox";
 
 export default async function UploadPage() {
