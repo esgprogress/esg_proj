@@ -28,10 +28,6 @@ export default function TopBar() {
                             <GitFork className="mr-2 h-4 w-4" /> GitHub
                         </Button>
                     </Link>
-                    <Button className="rounded-xl"
-                    >
-                        Get involved <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
                 </div>
             </div>
         </header>

@@ -30,18 +30,18 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import TopBar from "@/components/TopBar";
 import BottomBar from "@/components/BottomBar";
+import Link from "next/link";
 
 const EXAMPLE_COMPANIES = [
-    { name: "Unilever", sector: "Consumer", region: "Global", score: 78, trend: "+3" },
-    { name: "Microsoft", sector: "Technology", region: "Global", score: 84, trend: "+1" },
-    { name: "Toyota", sector: "Automotive", region: "APAC", score: 73, trend: "+2" },
-    { name: "Nestlé", sector: "Consumer", region: "EMEA", score: 76, trend: "-1" },
-    { name: "Maersk", sector: "Logistics", region: "EMEA", score: 71, trend: "+4" },
-    { name: "Tata Steel", sector: "Industrial", region: "India", score: 69, trend: "+2" },
+    { name: "Unilever", sector: "Consumer", region: "Global"},
+    { name: "Microsoft", sector: "Technology", region: "Global" },
+    { name: "Toyota", sector: "Automotive", region: "APAC" },
+    { name: "Nestlé", sector: "Consumer", region: "EMEA" },
+    { name: "Maersk", sector: "Logistics", region: "EMEA" },
+    { name: "Tata Steel", sector: "Industrial", region: "India" },
 ];
 
 const EXAMPLE_SOURCES = [
@@ -198,10 +198,7 @@ export default function RootLayout() {
                     >
                         <Card className="rounded-3xl shadow-sm">
                             <CardHeader className="pb-2">
-                                <CardTitle className="text-base">Live preview (sample)</CardTitle>
-                                <CardDescription>
-                                    Quick look at the kind of ranked, explainable ESG view you’ll get for each company.
-                                </CardDescription>
+                                <CardTitle className="text-base">Live search</CardTitle>
                             </CardHeader>
                             <CardContent className="p-5 pt-2">
                                 <div className="flex flex-wrap items-center gap-2">
@@ -227,10 +224,6 @@ export default function RootLayout() {
                                                 <div className="text-xs text-muted-foreground">
                                                     {c.sector} • {c.region}
                                                 </div>
-                                            </div>
-                                            <div className="text-right">
-                                                <div className="text-sm font-semibold">{c.score}/100</div>
-                                                <div className="text-xs text-muted-foreground">Trend {c.trend}</div>
                                             </div>
                                         </div>
                                     ))}
@@ -428,12 +421,11 @@ export default function RootLayout() {
                                     improve methods, and keep the data honest.
                                 </p>
                                 <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-                                    <Button className="rounded-2xl" onClick={() => window.alert("Contribute placeholder")}
-                                    >Contribute on GitHub</Button
-                                    >
-                                    <Button variant="outline" className="rounded-2xl" onClick={() => window.alert("Community placeholder")}
-                                    >Join community</Button
-                                    >
+                                    <Link href={process.env.NEXT_PUBLIC_GITHUB_REPOSITORY_URL}>
+                                        <Button className="rounded-2xl"
+                                        >Contribute on GitHub</Button
+                                        >
+                                    </Link>
                                 </div>
                             </div>
                             <div className="grid gap-3 md:grid-cols-2">
