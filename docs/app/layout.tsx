@@ -1,22 +1,31 @@
 import {Footer, Layout, Navbar} from 'nextra-theme-docs'
-import {Head} from 'nextra/components'
+import {Banner, Head} from 'nextra/components'
 import {getPageMap} from 'nextra/page-map'
 import './globals.css'
 import {Metadata} from "next";
 import {NextraSearchDialog} from "@/components/nextra-search-dialog";
 import {getPagesFromPageMap} from "@/lib/getPagesFromPageMap";
-import esgProjLogo from '../assets/images/esgProgressLogo.svg'
+import Image from "next/image";
+import esgProgressLogo from '../assets/images/esgProgressLogo.svg'
 
 export const metadata: Metadata = {
     // Define your metadata here
     // For more information on metadata API, see: https://nextjs.org/docs/app/building-your-application/optimizing/metadata
 }
 
-// const banner = <Banner storageKey="some-key">This template was created with 🩸 and 💦 by <Link href="https://github.com/phucbm">PHUCBM</Link> 🐧</Banner>
+const banner = <Banner storageKey="some-key"></Banner>
+const logo_enclosure = <div className="flex h-11 w-11 items-center justify-center shadow-sm flex-row">
+                                    <Image src={esgProgressLogo} alt="ESGProgress Logo"/>
+                                    <p className="text-white text-sm font-semibold">
+                                        ESGProgress Docs
+                                    </p>
+                                </div>
+
 const navbar = (
     <Navbar
         projectLink="https://github.com/ArjunQuickwork/esg_proj"
-        logo={<img src={esgProjLogo} alt="Logo" width={100} height={20}/>}
+        logo={logo_enclosure}
+
     />
 )
 const footer = <Footer>MIT @ ESGProgress.org</Footer>
@@ -54,7 +63,7 @@ export default async function RootLayout({children}) {
             // banner={banner}
             navbar={navbar}
             pageMap={pageMap}
-            docsRepositoryBase="https://github.com/ArjunQuickwork/esg_proj"
+            docsRepositoryBase="https://github.com/ArjunQuickwork/esg_proj/docs"
             footer={footer}
             search={<NextraSearchDialog pages={pages}/>}
             // ... Your additional layout options
