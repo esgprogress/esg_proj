@@ -14,7 +14,7 @@ type ResponseSchema = {
 
 type ApiPlaygroundProps = {
     endpoint: string;
-    method?: "GET" | "POST";
+    method?: "GET" | "POST" | "PUT" | "DELETE";
     responseSchema?: ResponseSchema;
 };
 
