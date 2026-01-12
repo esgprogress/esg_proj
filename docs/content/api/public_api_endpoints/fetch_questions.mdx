@@ -15,18 +15,16 @@ import ApiPlayground from "../../../components/ApiPlayground";
 ## Try Me!
 
 <ApiPlayground
-    endpoint="/api/fetchCompanyData"
+    endpoint="/api/fetchQuestions"
     method="GET"
     responseSchema={{
     title: "Questions",
     fields: {
         questions: {
             type: "array",
-            fields: {
-                type: "string",
-                description: "Question"
+            description: "A list of environmental questions for the given industry"
         }
-        }}}}/>
+        }}}/>
 
 ----
 
