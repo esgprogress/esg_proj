@@ -59,7 +59,8 @@ export default function ApiPlayground({
         setError(null);
 
         try {
-            const res = await fetch(buildQuery(), { method });
+            const query = buildQuery();
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${query}`, { method });
             setStatus(res.status);
 
             const text = await res.text();

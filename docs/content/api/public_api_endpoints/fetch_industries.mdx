@@ -18,10 +18,8 @@ import ApiPlayground from "../../../components/ApiPlayground";
     method="GET"
     responseSchema={{
     title: "Company",
-    type: "array",
-    items: {
-        type: "object",
-        fields: {
+    fields: {
+        company: {
             type: "string",
             description: "Name of the company"
         }
