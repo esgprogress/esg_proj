@@ -159,14 +159,15 @@ export default function RootLayout() {
                             <Button className="h-11 rounded-2xl" onClick={() => window.alert("Search results placeholder")}
                             >Search</Button
                             >
-                            <Button
-                                variant="outline"
-                                className="h-11 rounded-2xl"
-                                onClick={() => window.alert("API docs placeholder")}
-                            >
-                                View API
-                                <ExternalLink className="ml-2 h-4 w-4" />
-                            </Button>
+                            <Link href={process.env.NEXT_PUBLIC_DOCS_BASE_URL}>
+                                <Button
+                                    variant="outline"
+                                    className="h-11 rounded-2xl"
+                                >
+                                    View API
+                                    <ExternalLink className="ml-2 h-4 w-4" />
+                                </Button>
+                            </Link>
                         </div>
 
                         <div className="mt-6 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">

@@ -1,0 +1,176 @@
+import ApiPlayground from "../../../components/ApiPlayground";
+
+<span className="inline-flex items-center gap-2 mb-6">
+  <span
+      className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+    GET
+  </span>
+  <span className="text-sm font-mono text-gray-600 dark:text-gray-400">
+    /api/companies
+  </span>
+</span>
+
+---
+
+## Try Me!
+
+<ApiPlayground
+    endpoint="/api/companies"
+    method="GET"
+    responseSchema={{
+        title: "name",
+        fields: {
+            name: {
+                type: "string",
+                description: "Name of the company"
+            },
+            slug: {
+                type: "string",
+                description: "URL-friendly unique identifier"
+            },
+            industry: {
+                type: "string",
+                description: "Industry the company operates in"
+            },
+            country: {
+                type: "string",
+                description: "Country where the company is based"
+            }
+        }
+    }}/>
+
+----
+
+## Summary
+
+Returns a list of all companies whose data is currently present in the database.
+
+This endpoint is designed for **read-only access** and is commonly used by client applications to populate selectors such as dropdowns, filters, and search facets.
+
+---
+
+## Description
+
+The **Fetch Companies** API retrieves companies records from the database and returns them as a JSON array.
+
+Key characteristics of this endpoint:
+
+- Publicly accessible (no authentication required)
+- No query parameters or request body
+- Database identifiers (`_id`) are excluded from responses
+- Empty results are treated as a valid, non-error response
+- Clear separation between database errors and unexpected server failures
+
+This endpoint serves as the **authoritative source of company data** across the platform.
+
+---
+
+## Endpoint
+
+```http
+GET /api/companies
+```
+
+-----
+
+### Request
+This endpoint does not accept any parameters
+
+#### Headers
+This endpoint **does not** accept any parameters
+
+| Header   | Required | Description                    |
+|----------|----------|--------------------------------|
+| `Accept` | Optional | Defaults to `application/json` |
+
+----
+
+### Response Schema
+
+#### Success - `200 OK`
+
+```json lines
+Company[]
+```
+
+##### Company Object
+
+| Field      | Type     | Description                                        |
+|------------|----------|----------------------------------------------------|
+| `name`     | `string` | Name of the company                                |
+| `slug`     | `string` | URL-friendly slug                                  |
+| `country`  | `string` | The country the company is headquartered in        |
+| `industry` | `string` | The industry the company predominantly operates in |
+
+##### Example Response
+
+```json lines
+[
+  {
+    "name": "Apple",
+    "slug": "apple",
+    "country": "North America",
+    "industry": "Technology"
+  },
+  {
+    "name": "BHP",
+    "slug": "bhp",
+    "country": "Australia",
+    "industry": "Mining"
+  }
+]
+```
+
+##### Empty Response
+
+If no companies are available, an empty array is returned:
+
+```json lines
+[]
+```
+
+------
+
+### Error Codes & Response Types
+
+#### ```503 Service Unavailable```
+Returned when the database is temporarily unavailable, or a query fails due to a database issue
+
+##### Response Body
+
+``` json lines
+{
+    "detail" : "Database temporarily unavailable"
+}
+```
+
+##### Typical Causes
+1. MongoDB Connection Issues
+2. Database timeout or query failure for a non-general reason
+
+------
+
+#### `500 Internal Server Error`
+
+Returned when an unexpected server-side error occurs.
+
+##### Response Body
+
+```json lines
+{
+    "detail" : "Internal server error"
+}
+```
+
+##### Typical Causes
+1. Unhandled runtime exception
+2. Application-level failure outside database operations.
+
+-----
+
+### Implementation Notes
+1. Uses a MongoDB find() query with projection to exclude _id
+2. Materializes the cursor before returning the response
+3. Logs both database-specific and unexpected errors for observability
+4. Treats empty datasets as a valid state, not an error condition
+

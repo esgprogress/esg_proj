@@ -142,7 +142,7 @@ export function NextraSearchDialog({placeholder = "Search...", pages = []}: Prop
 
             <CommandDialog open={open} onOpenChange={setOpen}
                            showCloseButton={false}
-                           className="search-dialog !max-w-[800px] overflow-hidden !bg-transparent px-2 border-none [&_.bg-popover]:bg-transparent">
+                           className="search-dialog max-w-200! overflow-hidden bg-transparent! px-2 border-none [&_.bg-popover]:bg-transparent">
 
                 <div className="border-4 rounded-2xl bg-background">
                     <SearchInput
@@ -179,7 +179,7 @@ function SearchWelcomePages(
                     value={title}
                     title={title}
                     parent={parent}
-                    onSelect={() => onSelect(url)}
+                    onSelect={() => onSelect!(url)}
                     description={description}
                 />
             ))}
@@ -279,7 +279,7 @@ function SearchItem({url, title, description, onSelect, value, parent}: {
     value?: string;
 }) {
     return (
-        <CommandItem onSelect={() => onSelect(url)} value={value} className="cursor-pointer">
+        <CommandItem onSelect={() => onSelect!(url!)} value={value} className="cursor-pointer">
             <div className="flex flex-col gap-1 w-full">
                 <div className="flex items-center gap-1">
                     {parent && (
@@ -360,7 +360,7 @@ async function importPagefind() {
     window.pagefind = await import(
         /* webpackIgnore: true */ addBasePath('/_pagefind/pagefind.js')
         );
-    await window.pagefind.options({
+    await window!.pagefind!.options({
         baseUrl: '/'
     });
 }

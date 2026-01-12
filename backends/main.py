@@ -85,7 +85,7 @@ async def fetchIndustries():
 async def fetchCompaniesByIndustry(industry: str):
     try:
         # Query MongoDB
-        result = data_collection.find({"industry": industry}, {"_id": 0, "industry": 1})
+        result = data_collection.find({"industry": industry}, {"_id": 0, "industry": 1, "name": 1, "country": 1, "slug": 1})
 
         # Pull results into eagerly evaluated format
         json_dump = list(result)
