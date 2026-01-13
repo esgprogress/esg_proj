@@ -34,7 +34,7 @@ print("sys.path:", sys.path)
 
 web_server.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://esgprogress.org", "https://docs.esgprogress.org"],
+    allow_origins=["http://localhost:3000", "https://esgprogress.org", "https://docs.esgprogress.org", "http://localhost:3002"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -114,19 +114,20 @@ async def fetchCompaniesByIndustry(industry: str):
 async def fetchQuestions(industry: str):
     try:
         # Mongo queries
-        result_all = questions_collection.find({"industry": "main"}, {"_id": 0})
-        result_industry_specific = questions_collection.find({"industry": industry}, {"_id": 0})
+        questions = questions_collection.find({}, {"_id": 0})[0]
+        environmental = questions['environmental']
+        social = questions['social']
+        governance = questions['governance']
+        industry = questions[industry]
 
-        # Conversion to eagerly evaluated format (list)
-        json_dump_main = list(result_all)
-        json_dump_industry_specific = list(result_industry_specific)
+        response_dict = {
+            "environmental": environmental,
+            "social": social,
+            "governance": governance,
+            "industry": industry
+        }
 
-        if not json_dump_main:
-            logger.info("No general questions could be found")
-
-        if not json_dump_industry_specific:
-            logger.info("No industry-specific questions found for industry " + industry)
-        return json_dump_main + json_dump_industry_specific
+        return response_dict
 
     except PyMongoError as e:
         # Database errors
