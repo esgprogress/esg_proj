@@ -1,22 +1,8 @@
 "use client"
 
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import {
-    Search,
-    ShieldCheck,
-    Database,
-    BarChart3,
-    FileText,
-    Sparkles,
-    ArrowRight,
-    ExternalLink,
-    CheckCircle2,
-    LineChart,
-    Layers,
-    Lock,
-    Rocket,
-} from "lucide-react";
+import React, {useEffect, useMemo, useState} from "react";
+import {motion} from "framer-motion";
+import {ArrowRight, CheckCircle2, LineChart, Lock, Rocket, Sparkles,} from "lucide-react";
 
 /**
  * Open ESG Tracker — Single-file landing page
@@ -24,12 +10,11 @@ import {
  * - shadcn/ui components
  * - Framer Motion for tasteful animation
  */
-
 // shadcn/ui
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Badge} from "@/components/ui/badge";
+import {Separator} from "@/components/ui/separator";
 import TopBar from "@/components/TopBar";
 import BottomBar from "@/components/BottomBar";
 import Link from "next/link";
@@ -64,31 +49,21 @@ function Pill({ children }: { children: React.ReactNode }) {
 }
 
 export default function RootLayout() {
-    const [query, setQuery] = useState("");
-    const [sector, setSector] = useState<string>("All");
-    const [region, setRegion] = useState<string>("All");
+    const [filtered, setFiltered] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const sectors = useMemo(() => {
-        const s = new Set<string>(["All"]);
-        EXAMPLE_COMPANIES.forEach((c) => s.add(c.sector));
-        return Array.from(s);
+    useEffect(() => {
+        async function load() {
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies`
+            );
+            const data = await res.json();
+            setFiltered(data);
+            setLoading(false);
+        }
+
+        load();
     }, []);
-
-    const regions = useMemo(() => {
-        const r = new Set<string>(["All"]);
-        EXAMPLE_COMPANIES.forEach((c) => r.add(c.region));
-        return Array.from(r);
-    }, []);
-
-    const filtered = useMemo(() => {
-        const q = query.trim().toLowerCase();
-        return EXAMPLE_COMPANIES.filter((c) => {
-            const matchesQuery = !q || c.name.toLowerCase().includes(q) || c.sector.toLowerCase().includes(q);
-            const matchesSector = sector === "All" || c.sector === sector;
-            const matchesRegion = region === "All" || c.region === region;
-            return matchesQuery && matchesSector && matchesRegion;
-        });
-    }, [query, sector, region]);
 
     return (
         <div className="min-h-screen bg-[#313d00]">
@@ -168,17 +143,19 @@ export default function RootLayout() {
 
                                 <div className="mt-4 grid gap-3">
                                     {filtered.slice(0, 5).map((c) => (
-                                        <div
-                                            key={c.name}
-                                            className="flex items-center justify-between rounded-2xl border p-3"
-                                        >
-                                            <div>
-                                                <div className="text-sm font-medium">{c.name}</div>
-                                                <div className="text-xs text-muted-foreground">
-                                                    {c.sector} • {c.region}
+                                        <Link href={`/company/${c.slug}`} key={c.slug}>
+                                            <div
+                                                key={c.name}
+                                                className="flex items-center justify-between rounded-2xl border p-3 bg-[#8d9765]"
+                                            >
+                                                <div>
+                                                    <div className="text-sm font-medium">{c.name}</div>
+                                                    <div className="text-xs text-muted-foreground">
+                                                        {c.industry} • {c.country}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     ))}
                                 </div>
 
