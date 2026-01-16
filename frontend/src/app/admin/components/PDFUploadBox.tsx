@@ -93,7 +93,7 @@ export default function PDFUploadBox({companies}: {companies: string[]}) {
                                     const formData = new FormData()
                                     formData.append("file", file)
 
-                                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies/addData?company_name=${fileName}`, {
+                                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies/addData?company_name=${encodeURIComponent(fileName)}`, {
                                         method: "POST",
                                         body: formData,
                                         headers: {

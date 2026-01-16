@@ -1,4 +1,3 @@
-import {ArrowRight, GitFork, Globe2, Sparkles} from "lucide-react";
 import React from "react";
 import Link from "next/link";
 import {Button} from "@/components/ui/button"
@@ -11,23 +10,33 @@ export default function TopBar() {
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
                 <div className="flex items-center gap-2">
                     <div className="flex h-9 w-9 items-center justify-center rounded-xl shadow-sm">
-                        <Image src={esgProgressLogo} alt="ESGProgress Logo"/>
+                        <Link href="/">
+                            <Image src={esgProgressLogo} alt="ESGProgress Logo"/>
+                        </Link>
                     </div>
                     <div>
-                        <div className="text-sm font-semibold leading-none">ESGProgress - An Open ESG Tracker</div>
-                        <div className="text-xs text-muted-foreground">Open-source ESG intelligence from public data</div>
+                        <div className="text-sm font-semibold leading-none">ESGProgress</div>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
+                    <Link href={'/about-us'}>
+                        <Button variant="ghost" className="rounded-xl">
+                            About us
+                        </Button>
+                    </Link>
+                    <Link href={'/our-methodology'}>
+                        <Button variant="ghost" className="rounded-xl">
+                            Our methodology
+                        </Button>
+                    </Link>
                     <Link href={'/dashboard'}>
                         <Button variant="ghost" className="rounded-xl"
                         >Explore dashboards</Button
                         >
                     </Link>
-                    <Link href={process.env.NEXT_PUBLIC_GITHUB_REPOSITORY_URL}>
-                        <Button variant="outline" className="rounded-xl"
-                        >
-                            <GitFork className="mr-2 h-4 w-4" /> GitHub
+                    <Link href={'/contribute'}>
+                        <Button variant="outline" className="rounded-xl">
+                            Contribute to the mission
                         </Button>
                     </Link>
                 </div>

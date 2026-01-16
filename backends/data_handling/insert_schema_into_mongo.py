@@ -65,7 +65,8 @@ def insert_json_into_mongo(data, company_name):
                     "environmental.quantitative.$[elem].current": current
                 }
             },
-            array_filters=[{"elem.criterion": criterion}]
+            array_filters=[{"elem.criterion": criterion}],
+            upsert=True
         )
 
         # Push FUTURE data (list-safe)
@@ -79,7 +80,8 @@ def insert_json_into_mongo(data, company_name):
                         }
                     }
                 },
-                array_filters=[{"elem.criterion": criterion}]
+                array_filters=[{"elem.criterion": criterion}],
+                upsert=True
             )
 
     # ------------------------------------------------------------------
@@ -117,7 +119,8 @@ def insert_json_into_mongo(data, company_name):
                     }
                 }
             },
-            array_filters=[{"elem.criterion": criterion}]
+            array_filters=[{"elem.criterion": criterion}],
+            upsert=True
         )
 
     # ------------------------------------------------------------------
@@ -155,7 +158,8 @@ def insert_json_into_mongo(data, company_name):
                     }
                 }
             },
-            array_filters=[{"elem.criterion": criterion}]
+            array_filters=[{"elem.criterion": criterion}],
+            upsert=True
         )
 
     # ------------------------------------------------------------------
@@ -193,5 +197,6 @@ def insert_json_into_mongo(data, company_name):
                     }
                 }
             },
-            array_filters=[{"elem.criterion": criterion}]
+            array_filters=[{"elem.criterion": criterion}],
+            upsert=True
         )

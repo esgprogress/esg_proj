@@ -34,7 +34,7 @@ print("sys.path:", sys.path)
 
 web_server.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://esgprogress.org", "https://docs.esgprogress.org", "http://localhost:3002"],
+    allow_origins=["http://localhost:3000", "https://esgprogress.org", "https://docs.esgprogress.org", "http://localhost:3002", "https://www.esgprogress.org"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

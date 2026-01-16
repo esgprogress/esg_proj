@@ -1,13 +1,23 @@
-import React from "react"
-import {Button} from "@/components/ui/button";
+import React from "react";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import clsx from "clsx";
 
-export default function BottomBar() {
+type BottomBarProps = {
+    className?: string;
+};
+
+export default function BottomBar({ className }: BottomBarProps) {
     return (
-        <footer className="mt-16 border-t border-muted/40 pt-6">
+        <footer
+            className={clsx(
+                "mt-16 border-t border-muted/40 pt-6",
+                className
+            )}
+        >
             <div className="mx-auto max-w-5xl px-4 text-sm text-muted-foreground space-y-3">
 
-                <p className="font-medium text-foreground">
+                <p className="font-medium text-inherit">
                     Disclaimer
                 </p>
 
@@ -27,24 +37,25 @@ export default function BottomBar() {
                 </p>
 
                 <div className="flex flex-wrap items-center justify-between gap-2 pt-2 text-xs text-muted-foreground">
-        <span>
-            While we strive for accuracy and transparency, the data displayed is generated and structured using an evolving analytical model that is currently under development. As such, the information may be incomplete, subject to change, or not fully accurate, and should not be relied upon as definitive or authoritative.
-    </span>
-
                     <span>
-
+                        While we strive for accuracy and transparency, the data displayed is generated and structured using an evolving analytical model that is currently under development. As such, the information may be incomplete, subject to change, or not fully accurate, and should not be relied upon as definitive or authoritative.
                     </span>
-                    Users are encouraged to independently verify information directly with original sources. We welcome feedback, corrections, and suggestions, and invite stakeholders to contact us with comments or inputs to help improve the quality and reliability of the platform.
+
                     <span>
-    Last updated: 7 January 2026
-    </span>
+                        Users are encouraged to independently verify information directly with original sources. We welcome feedback, corrections, and suggestions, and invite stakeholders to contact us with comments or inputs to help improve the quality and reliability of the platform.
+                    </span>
+
+                    <span>
+                        Last updated: 7 January 2026
+                    </span>
                 </div>
-                <Link href='/disclaimer/legal' className="mt-3 flex">
+
+                <Link href="/disclaimer/legal" className="mt-3 mb-10 flex">
                     <Button className="rounded-xl">
                         Full Disclaimer
                     </Button>
                 </Link>
             </div>
         </footer>
-    )
+    );
 }
