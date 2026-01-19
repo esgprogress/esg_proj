@@ -7,6 +7,7 @@ import {
     YAxis,
     Tooltip,
     ResponsiveContainer,
+    Legend,
 } from "recharts"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { motion } from "framer-motion"
@@ -75,6 +76,8 @@ export function EnvironmentalMetricChart({
                                 strokeDasharray="6 4"
                                 dot={{ r: 4 }}
                             />
+
+                            <Legend verticalAlign="bottom" height={36} />
 
                         </LineChart>
                     </ResponsiveContainer>

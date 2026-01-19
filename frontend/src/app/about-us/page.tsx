@@ -31,17 +31,6 @@ export default function AboutPage() {
                     An open ESG database for a more sustainable future
                 </motion.h2>
 
-                {/* Goal Paragraph */}
-                <motion.p
-                    {...heroFadeUp(0.12)}
-                    className="max-w-3xl text-lg leading-relaxed text-slate-600"
-                >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
-                </motion.p>
-
                 {/* Separator */}
                 <motion.div {...heroFadeUp(0.18)}>
                     <Separator className="bg-[#c6d1b3]" />

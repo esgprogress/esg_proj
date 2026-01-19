@@ -17,7 +17,7 @@ export default async function CompanyPage({
     const company = await fetchCompanyESG(slug)
 
     return (
-        <>
+        <div className="bg-[#f3f6ef]">
         <TopBar/>
             <main className="px-4 py-14 md:py-20">
                 <div className="mx-auto max-w-6xl space-y-14">
@@ -33,6 +33,6 @@ export default async function CompanyPage({
                 </div>
             </main>
         <BottomBar/>
-        </>
+        </div>
     )
 }
