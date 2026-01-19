@@ -34,7 +34,7 @@ print("sys.path:", sys.path)
 
 web_server.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://esgprogress.org", "https://docs.esgprogress.org", "http://localhost:3002"],
+    allow_origins=["http://localhost:3000", "https://esgprogress.org", "https://docs.esgprogress.org", "http://localhost:3002", "https://www.esgprogress.org"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -368,6 +368,14 @@ async def add_data(company_name: str, file: UploadFile = File(...), claims: dict
         data = extract_data("./out/llm_context.txt")
         dict_json = json.loads(data.json())
         insert_json_into_mongo(dict_json, company_name)
+
+        # Rename and reorganize
+        if company_name == "undefined":
+            destination = UPLOAD_DIR / dict_json['company_name'] / f"{dict_json['company_year']}.pdf"
+        else:
+            destination = UPLOAD_DIR / company_name / f"{dict_json['company_year']}.pdf"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        os.rename(file_path, destination)
 
     except PyMongoError as e:
         logger.exception("MongoDB error in add_data: " + str(e))

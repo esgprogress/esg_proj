@@ -60,8 +60,7 @@ export function EnvironmentalMetricChart({
                             {/* Actuals */}
                             <Line
                                 type="monotone"
-                                dataKey="value"
-                                data={data.filter(d => d.type === "current")}
+                                dataKey="current"
                                 stroke="#111827"
                                 strokeWidth={2.5}
                                 dot={{ r: 3 }}
@@ -70,8 +69,7 @@ export function EnvironmentalMetricChart({
                             {/* Current target */}
                             <Line
                                 type="monotone"
-                                dataKey="value"
-                                data={data.filter(d => d.type === "future")}
+                                dataKey="future"
                                 stroke="#2563eb"
                                 strokeWidth={2}
                                 strokeDasharray="6 4"

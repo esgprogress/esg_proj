@@ -1,7 +1,7 @@
 export interface Point {
     year: number
-    value: number
-    type: "current" | "future"
+    current: number | null
+    future: number | null
 }
 
 export interface EnvironmentalSeries {
