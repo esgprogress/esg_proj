@@ -1,41 +1,54 @@
-import {EnvironmentalSeries, EnvironmentQualitativeData, Point} from "../types"
+import {EnvironmentalSeries, EnvironmentQualitativeData} from "../types"
+
+type RawPoint = {
+    year: number
+    value: number
+}
 
 export function normalizeEnvironmentalQuantitativeMetric(
     name: string,
     metric: any
 ): EnvironmentalSeries {
-    const points: Point[] = []
 
-    // CURRENT (array)
+    const byYear = new Map<number, { current: number | null; future: number | null }>()
+
+    // CURRENT
     if (Array.isArray(metric.current)) {
-        metric.current.forEach((d: any) => {
+        metric.current.forEach((d: RawPoint) => {
             if (!d?.year || d.year === 0) return
-            points.push({
-                year: d.year,
-                value: d.value,
-                type: "current",
-            })
+
+            const entry = byYear.get(d.year) ?? { current: null, future: null }
+            entry.current = d.value
+            byYear.set(d.year, entry)
         })
     }
 
-    // FUTURE (array)
+    // FUTURE
     if (Array.isArray(metric.future)) {
-        metric.future.forEach((d: any) => {
+        metric.future.forEach((d: RawPoint) => {
             if (!d?.year || d.year === 0) return
-            points.push({
-                year: d.year,
-                value: d.value,
-                type: "future",
-            })
+
+            const entry = byYear.get(d.year) ?? { current: null, future: null }
+            entry.future = d.value
+            byYear.set(d.year, entry)
         })
     }
+
+    const data = Array.from(byYear.entries())
+        .map(([year, values]) => ({
+            year,
+            current: values.current,
+            future: values.future,
+        }))
+        .sort((a, b) => a.year - b.year)
 
     return {
         name,
         unit: metric.unit,
-        data: points.sort((a, b) => a.year - b.year),
+        data,
     }
 }
+
 
 
 export function normalizeEnvironmentalQualitativeMetric(

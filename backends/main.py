@@ -369,6 +369,14 @@ async def add_data(company_name: str, file: UploadFile = File(...), claims: dict
         dict_json = json.loads(data.json())
         insert_json_into_mongo(dict_json, company_name)
 
+        # Rename and reorganize
+        if company_name == "undefined":
+            destination = UPLOAD_DIR / dict_json['company_name'] / f"{dict_json['company_year']}.pdf"
+        else:
+            destination = UPLOAD_DIR / company_name / f"{dict_json['company_year']}.pdf"
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        os.rename(file_path, destination)
+
     except PyMongoError as e:
         logger.exception("MongoDB error in add_data: " + str(e))
         raise HTTPException(
