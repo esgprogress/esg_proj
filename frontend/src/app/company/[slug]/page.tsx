@@ -1,12 +1,14 @@
-
-import { CompanyHeader } from "./components/CompanyHeader"
-import { EnvironmentalQuantitativeSection } from "./components/EnvironmentalQuantitativeSection"
-import { fetchCompanyESG } from "@/lib/data/fetchCompanyESGData"
+import {CompanyHeader} from "./components/CompanyHeader"
+import {EnvironmentalQuantitativeSection} from "./components/EnvironmentalQuantitativeSection"
+import {fetchCompanyESG} from "@/lib/data/fetchCompanyESGData"
 import {SocialGovernanceSection} from "@/app/company/[slug]/components/SocialGovernanceSection";
 import {EnvironmentalQualitativeSection} from "@/app/company/[slug]/components/EnvironmentQualitativeSection";
 import TopBar from "@/components/TopBar";
 import React from "react";
 import BottomBar from "@/components/BottomBar";
+import Link from "next/link";
+import ReportProofSection from "@/app/company/[slug]/components/ReportProofSection";
+import {fetchProofData} from "@/lib/data/fetchProofData";
 
 export default async function CompanyPage({
                                               params,
@@ -15,10 +17,11 @@ export default async function CompanyPage({
 }) {
     const {slug} = await params
     const company = await fetchCompanyESG(slug)
+    const reports = await fetchProofData(slug);
 
     return (
         <div className="bg-[#f3f6ef]">
-        <TopBar/>
+            <TopBar/>
             <main className="px-4 py-14 md:py-20">
                 <div className="mx-auto max-w-6xl space-y-14">
                     <CompanyHeader
@@ -27,12 +30,19 @@ export default async function CompanyPage({
                         country={company.country ?? "USA"}
                     />
 
-                        <EnvironmentalQuantitativeSection environmental={company.environmental} />
-                        <EnvironmentalQualitativeSection rows={company.environmental.qualitative}/>
-                        <SocialGovernanceSection social={company.social} governance={company.governance} />
+                    <EnvironmentalQuantitativeSection environmental={company.environmental}/>
+                    <EnvironmentalQualitativeSection rows={company.environmental.qualitative}/>
+                    <SocialGovernanceSection social={company.social} governance={company.governance}/>
+
+                    <section className="space-y-6">
+                        <header className="space-y-1">
+                            <h2 className="text-xl font-semibold">Report Archive</h2>
+                        </header>
+                        <ReportProofSection slug={slug} reports={reports}/>
+                    </section>
                 </div>
             </main>
-        <BottomBar/>
+            <BottomBar/>
         </div>
     )
 }

@@ -1,7 +1,7 @@
-export async function fetchCompanyESG(slug: string) {
+export async function fetchProofData(slug: string) {
     try {
         const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/fetchCompany?company_slug=${slug}`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/proof/fetchData?company_slug=${slug}`,
             { cache: "no-store" } // important for dashboards
         )
 
@@ -10,7 +10,7 @@ export async function fetchCompanyESG(slug: string) {
             return null
         }
 
-        const data = (await res.json())[0]
+        const data = (await res.json())
 
         // Handle FastAPI validation errors explicitly
         if ("detail" in data) {
