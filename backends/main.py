@@ -7,6 +7,7 @@ from fastapi.params import Depends
 from pymongo.errors import PyMongoError
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import FileResponse
 
 from backends.auth.auth0_auth import auth0
 from backends.constants.mongo_client import data_collection, industries_collection, questions_collection
@@ -384,6 +385,60 @@ async def add_data(company_name: str, file: UploadFile = File(...), claims: dict
             detail="Database error in MongoDB"
         )
 
+    except Exception as e:
+        logger.exception("General system error :" + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error"
+        )
+
+
+@web_server.get("/api/proof/fetchData", summary="Fetch proof data", description="Fetch proof data for a given company")
+async def fetchProofData(company_slug: str):
+    try:
+        # Fetch current company name
+        company_name_result = data_collection.find({"slug": company_slug}, {"_id": 0, "name": 1, "slug": 1, "industry": 0, "country": 0})
+        json_dump = list(company_name_result)
+        if not json_dump:
+            logger.info("Company not found for slug " + company_slug)
+            return []
+        else:
+            main_company_name = json_dump[0]['name']
+
+            # Now, create the file path and return the file names
+            main_file_path = UPLOAD_DIR / main_company_name
+            files_in_main_file_path = os.listdir(main_file_path)
+
+            files = []
+            for file in files_in_main_file_path:
+                size = round(os.path.getsize(main_file_path / file) / 1048576, 2)
+                [file_name, file_type] = file.split(".")
+                files.append({"file_name": file_name, "file_type": file_type, "size": size})
+
+            return files
+
+    except PyMongoError as e:
+        logger.exception("MongoDB error in fetchProofData: " + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database error in MongoDB"
+        )
+
+    except Exception as e:
+        logger.exception("General system error :" + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error"
+        )
+
+
+@web_server.get('/api/proof/downloadData', summary="Download proof data", description="Download a given proof data file")
+async def downloadProofData(company_slug: str, file_name: str, file_type: str):
+    try:
+        file_dir = UPLOAD_DIR / company_slug / (file_name + file_type)
+        if not file_dir.exists():
+            return {"error": "File not found"}
+        return FileResponse(str(file_dir), filename=(file_name + file_type), media_type='application/pdf')
     except Exception as e:
         logger.exception("General system error :" + str(e))
         raise HTTPException(

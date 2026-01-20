@@ -19,15 +19,6 @@ import TopBar from "@/components/TopBar";
 import BottomBar from "@/components/BottomBar";
 import Link from "next/link";
 
-const EXAMPLE_COMPANIES = [
-    {name: "Unilever", sector: "Consumer", region: "Global"},
-    {name: "Microsoft", sector: "Technology", region: "Global"},
-    {name: "Toyota", sector: "Automotive", region: "APAC"},
-    {name: "Nestlé", sector: "Consumer", region: "EMEA"},
-    {name: "Maersk", sector: "Logistics", region: "EMEA"},
-    {name: "Tata Steel", sector: "Industrial", region: "India"},
-];
-
 function Stat({label, value, sub}: { label: string; value: string; sub?: string }) {
     return (
         <Card className="rounded-2xl shadow-sm">
