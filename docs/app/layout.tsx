@@ -7,6 +7,7 @@ import {NextraSearchDialog} from "@/components/nextra-search-dialog";
 import {getPagesFromPageMap} from "@/lib/getPagesFromPageMap";
 import Image from "next/image";
 import esgProgressLogo from '../assets/images/esgProgressLogo.svg'
+import {GoogleAnalytics} from "@next/third-parties/google";
 
 export const metadata: Metadata = {
     // Define your metadata here
@@ -69,6 +70,7 @@ export default async function RootLayout({children}) {
             // ... Your additional layout options
         >
             {children}
+            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!}/>
         </Layout>
         </body>
         </html>
