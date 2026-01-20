@@ -409,10 +409,7 @@ async def fetchProofData(company_slug: str):
             main_file_path = UPLOAD_DIR / main_company_name
 
             if not os.path.exists(main_file_path):
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail="company doesn't exist"
-                )
+                return []
 
             files_in_main_file_path = os.listdir(main_file_path)
 
