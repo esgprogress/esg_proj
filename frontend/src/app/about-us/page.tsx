@@ -2,11 +2,11 @@
 
 import React from "react";
 import TopBar from "@/components/TopBar";
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import {Card, CardContent} from "@/components/ui/card";
+import {Separator} from "@/components/ui/separator";
 import BottomBar from "@/components/BottomBar";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 
 import vaniMilindAgarwalPhoto from "../../assets/images/VaniMilindAgarwalPhoto.png";
 import arjunSanghiPhoto from "../../assets/images/ArjunSanghiPhoto.jpg";
@@ -15,7 +15,7 @@ import {heroFadeUp} from "@/lib/utils";
 export default function AboutPage() {
     return (
         <div className="min-h-screen bg-[#f3f6ef] text-black">
-            <TopBar />
+            <TopBar/>
 
             <section className="mx-auto max-w-6xl px-4 py-16 space-y-14">
                 {/* Company Title */}
@@ -31,9 +31,22 @@ export default function AboutPage() {
                     An open ESG database for a more sustainable future
                 </motion.h2>
 
+                {/* Goal Paragraph */}
+                <motion.p
+                    {...heroFadeUp(0.12)}
+                    className="max-w-3xl text-lg leading-relaxed text-slate-600"
+                >
+                    We believe that transparency and clarity are fundamental to advancing environmental, social, and
+                    governance (ESG) understanding and accountability. We are an open-source ESG intelligence platform
+                    that aggregates and normalises public data to provide verifiable, accessible insights into how major
+                    global companies perform on ESG commitments and actions. We serve all those interested in ESG
+                    progress by democratising information that is typically fragmented across disparate filings and
+                    disclosures.
+                </motion.p>
+
                 {/* Separator */}
                 <motion.div {...heroFadeUp(0.18)}>
-                    <Separator className="bg-[#c6d1b3]" />
+                    <Separator className="bg-[#c6d1b3]"/>
                 </motion.div>
 
                 {/* Our Team */}
@@ -102,7 +115,7 @@ export default function AboutPage() {
                 </div>
             </section>
 
-            <BottomBar />
+            <BottomBar/>
         </div>
     );
 }
