@@ -1,0 +1,22 @@
+meta {
+  name: Download Proof Files
+  type: http
+  seq: 14
+}
+
+get {
+  url: http://localhost:80/api/proof/downloadData?company_slug=apple&file_name=2018&file_type=pdf
+  body: none
+  auth: inherit
+}
+
+params:query {
+  company_slug: apple
+  file_name: 2018
+  file_type: pdf
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

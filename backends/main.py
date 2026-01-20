@@ -397,7 +397,7 @@ async def add_data(company_name: str, file: UploadFile = File(...), claims: dict
 async def fetchProofData(company_slug: str):
     try:
         # Fetch current company name
-        company_name_result = data_collection.find({"slug": company_slug}, {"_id": 0, "name": 1, "slug": 1, "industry": 0, "country": 0})
+        company_name_result = data_collection.find({"slug": company_slug}, {"_id": 0, "name": 1, "slug": 1})
         json_dump = list(company_name_result)
         if not json_dump:
             logger.info("Company not found for slug " + company_slug)
@@ -407,6 +407,13 @@ async def fetchProofData(company_slug: str):
 
             # Now, create the file path and return the file names
             main_file_path = UPLOAD_DIR / main_company_name
+
+            if not os.path.exists(main_file_path):
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="company doesn't exist"
+                )
+
             files_in_main_file_path = os.listdir(main_file_path)
 
             files = []
@@ -435,10 +442,20 @@ async def fetchProofData(company_slug: str):
 @web_server.get('/api/proof/downloadData', summary="Download proof data", description="Download a given proof data file")
 async def downloadProofData(company_slug: str, file_name: str, file_type: str):
     try:
-        file_dir = UPLOAD_DIR / company_slug / (file_name + file_type)
-        if not file_dir.exists():
-            return {"error": "File not found"}
-        return FileResponse(str(file_dir), filename=(file_name + file_type), media_type='application/pdf')
+        company_name_result = data_collection.find({"slug": company_slug}, {"_id": 0, "name": 1, "slug": 1})
+        json_dump = list(company_name_result)
+        if not json_dump:
+            logger.info("Company not found for slug " + company_slug)
+            return []
+        else:
+            main_company_name = json_dump[0]['name']
+            file_dir = UPLOAD_DIR / main_company_name / (file_name + "." + file_type)
+            if not file_dir.exists():
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="company doesn't exist"
+                )
+            return FileResponse(str(file_dir), filename=(file_name + "." + file_type), media_type='application/pdf')
     except Exception as e:
         logger.exception("General system error :" + str(e))
         raise HTTPException(
