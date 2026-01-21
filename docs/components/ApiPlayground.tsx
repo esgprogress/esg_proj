@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 
 type SchemaField = {
     type: string;
@@ -23,7 +23,7 @@ export default function ApiPlayground({
                                           method = "GET",
                                           responseSchema,
                                       }: ApiPlaygroundProps) {
-    const [params, setParams] = useState([{ key: "", value: "" }]);
+    const [params, setParams] = useState([{key: "", value: ""}]);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState<number | null>(null);
     const [response, setResponse] = useState<any>(null);
@@ -40,12 +40,16 @@ export default function ApiPlayground({
     }
 
     function addParam() {
-        setParams([...params, { key: "", value: "" }]);
+        setParams([...params, {key: "", value: ""}]);
+    }
+
+    function removeParam() {
+        setParams(params.slice(0, params.length - 1));
     }
 
     function buildQuery() {
         const query = new URLSearchParams();
-        params.forEach(({ key, value }) => {
+        params.forEach(({key, value}) => {
             if (key.trim()) query.append(key, value);
         });
         const qs = query.toString();
@@ -60,7 +64,7 @@ export default function ApiPlayground({
 
         try {
             const query = buildQuery();
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${query}`, { method });
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${query}`, {method});
             setStatus(res.status);
 
             const contentType = res.headers.get("content-type") || "";
@@ -84,7 +88,8 @@ export default function ApiPlayground({
     }
 
     return (
-        <div className="mt-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-6 space-y-6">
+        <div
+            className="mt-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 p-6 space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="font-mono text-sm text-gray-700 dark:text-gray-300">
@@ -132,6 +137,11 @@ export default function ApiPlayground({
                     className="mt-2 text-xs text-emerald-600 hover:underline"
                 >
                     + Add parameter
+                </button>
+
+                <button onClick={removeParam} className="mt-2 text-xs text-rose-700 hover:underline ml-2"
+                        disabled={params.length === 0}>
+                    - Remove parameter
                 </button>
             </div>
 
