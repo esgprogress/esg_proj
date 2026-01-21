@@ -1,0 +1,104 @@
+import ApiPlayground from "../../../components/ApiPlayground";
+
+<span className="inline-flex items-center gap-2 mb-6">
+  <span
+      className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+    GET
+  </span>
+  <span className="text-sm font-mono text-gray-600 dark:text-gray-400">
+    /api/proof/downloadData
+  </span>
+</span>
+
+---
+
+## Try Me!
+
+<ApiPlayground
+    endpoint="/api/proof/downloadData"
+    method="GET"
+    responseSchema={{
+        title: "file",
+        fields: {}
+    }}/>
+
+----
+
+## Summary
+
+Downloads the file corresponding to the given company, file name and type. Must be used in conjunction with the `Fetch Reports` endpoint.
+
+---
+
+## Description
+
+The **Download Reports** API downloads the requested report (if it exists) to your browser.
+
+---
+
+## Endpoint
+
+```http
+GET /api/proof/downloadData
+```
+
+-----
+
+### Request
+This endpoint accepts **three** parameters: `company_slug`, `file_name`, and `file_type`
+
+#### Parameters
+| Parameters     | Required    | Description                                    |
+|----------------|-------------|------------------------------------------------|
+| `company_slug` | `mandatory` | The slug of the company you wish to search for |
+| `file_name`    | `string`    | Name of the report                             |
+| `file_type`    | `string`    | File type, in lowercase                        |
+
+#### Headers
+This endpoint **does not** accept any parameters
+
+| Header   | Required | Description                    |
+|----------|----------|--------------------------------|
+| `Accept` | Optional | Defaults to `application/json` |
+
+----
+
+### Response Schema
+
+#### Success - `200 OK`
+
+```json lines
+FileObject
+```
+
+##### Empty Response
+
+If the requested file is not available, no download happens.
+
+
+------
+
+### Error Codes & Response Types
+
+#### `404 Not Found`
+
+Returned when the requested file does not exist on the server.
+
+----
+
+#### `500 Internal Server Error`
+
+Returned when an unexpected server-side error occurs.
+
+##### Response Body
+
+```json lines
+{
+    "detail" : "Internal server error"
+}
+```
+
+##### Typical Causes
+1. Unhandled runtime exception
+2. Application-level failure.
+

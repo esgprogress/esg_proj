@@ -63,6 +63,13 @@ export default function ApiPlayground({
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${query}`, { method });
             setStatus(res.status);
 
+            const contentType = res.headers.get("content-type") || "";
+
+            if (!contentType.includes("application/json")) {
+                window.open(res.url);
+                return;
+            }
+
             const text = await res.text();
             try {
                 setResponse(JSON.parse(text));
