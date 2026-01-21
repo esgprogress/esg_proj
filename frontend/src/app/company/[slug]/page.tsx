@@ -39,7 +39,7 @@ export default async function CompanyPage({
                         <header className="space-y-1">
                             <h2 className="text-xl font-semibold">Report Archive</h2>
                         </header>
-                        <ReportProofSection slug={slug} reports={reports}/>
+                        <ReportProofSection slug={slug} reports={sorted_reports}/>
                     </section>
                 </div>
             </main>
