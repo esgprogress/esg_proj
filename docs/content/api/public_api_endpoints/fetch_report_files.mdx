@@ -1,0 +1,172 @@
+import ApiPlayground from "../../../components/ApiPlayground";
+
+<span className="inline-flex items-center gap-2 mb-6">
+  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+    GET
+  </span>
+  <span className="text-sm font-mono text-gray-600 dark:text-gray-400">
+    /api/proof/fetchData
+  </span>
+</span>
+
+---
+
+## Try Me!
+
+<ApiPlayground
+    endpoint="/api/proof/fetchData"
+    method="GET"
+    responseSchema={{
+    title: "Report",
+    fields: {
+        file_name: {
+            type: "string",
+            description: "Name of the file"
+        },
+        file_type: {
+            type: "string",
+            description: "Type of the file, in lowercase"
+        },
+        file_size: {
+            type: "float",
+            description: "File size in megabytes, rounded to two decimal places"
+        }
+    }}}/>
+
+----
+
+## Summary
+
+Returns a list of all reports that have currently been ingested by the system for the given company.
+
+This endpoint is designed for **read-only access** and is commonly used by client applications to populate industry selectors such as dropdowns, filters, and search facets.
+
+---
+
+## Description
+
+The **Fetch Report Files** API retrieves report records from the database and returns them as a JSON array.
+
+Key characteristics of this endpoint:
+
+- Publicly accessible (no authentication required)
+- No query parameters or request body
+- Database identifiers (`_id`) are excluded from responses
+- Empty results are treated as a valid, non-error response
+- Clear separation between database errors and unexpected server failures
+
+This endpoint serves as the **authoritative source of ingested reports** across the platform.
+
+---
+
+## Endpoint
+
+```http
+GET /api/proof/fetchData
+```
+
+-----
+
+### Request
+This endpoint accepts a singular parameter: `company_slug`.
+
+#### Parameters
+| Parameters     | Required    | Description                                    |
+|----------------|-------------|------------------------------------------------|
+| `company_slug` | `mandatory` | The slug of the company you wish to search for |
+
+#### Headers
+This endpoint accepts one parameter.
+
+| Header   | Required | Description                    |
+|----------|----------|--------------------------------|
+| `Accept` | Optional | Defaults to `application/json` |
+
+----
+
+### Response Schema
+
+#### Success - `200 OK`
+
+```json lines
+Report[]
+```
+
+##### Report Object
+
+| Field       | Type     | Description                                                           |
+|-------------|----------|-----------------------------------------------------------------------|
+| `file_size` | `float`  | Floating-point number representing the size of the file, in megabytes |
+| `file_name` | `string` | Name of the report                                                    |
+| `file_type` | `string` | File type, in lowercase                                               |
+
+##### Example Response
+
+```json lines
+[
+  {
+    "file_size": 5.22,
+    "file_name": "2025",
+    "file_type": "pdf"
+  },
+  {
+    "file_size": 16.02,
+    "file_name": "2020",
+    "file_type": "pdf"
+  }
+]
+```
+
+##### Empty Response
+
+If no reports are available, an empty array is returned:
+
+```json lines
+[]
+```
+
+------
+
+### Error Codes & Response Types
+
+#### ```503 Service Unavailable```
+Returned when the database is temporarily unavailable, or a query fails due to a database issue
+
+##### Response Body
+
+``` json lines
+{
+    "detail" : "Database temporarily unavailable"
+}
+```
+
+##### Typical Causes
+1. MongoDB Connection Issues
+2. Database timeout or query failure for a non-general reason
+
+------
+
+#### `500 Internal Server Error`
+
+Returned when an unexpected server-side error occurs.
+
+##### Response Body
+
+```json lines
+{
+    "detail" : "Internal server error"
+}
+```
+
+##### Typical Causes
+1. Unhandled runtime exception
+2. Application-level failure outside database operations.
+
+-----
+
+### Implementation Notes
+1. Uses a MongoDB find() query with projection to exclude _id
+2. Materializes the cursor before returning the response
+3. Logs both database-specific and unexpected errors for observability
+4. Treats empty datasets as a valid state, not an error condition
+
