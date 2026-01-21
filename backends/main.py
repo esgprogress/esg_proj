@@ -460,7 +460,7 @@ async def downloadProofData(company_slug: str, file_name: str, file_type: str):
             detail="Internal server error"
         )
 
-@web_server.get("/debug/upload-dir")
+@web_server.get("/api/debug/upload-dir")
 def debug_upload_dir():
     return {
         "upload_dir": str(UPLOAD_DIR),
