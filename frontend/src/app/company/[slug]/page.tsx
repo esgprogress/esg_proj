@@ -18,6 +18,7 @@ export default async function CompanyPage({
     const {slug} = await params
     const company = await fetchCompanyESG(slug)
     const reports = await fetchProofData(slug);
+    const sorted_reports = reports.sort((report1, report2) => report1.file_name > report2.file_name)
 
     return (
         <div className="bg-[#f3f6ef]">
