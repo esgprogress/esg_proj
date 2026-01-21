@@ -459,3 +459,13 @@ async def downloadProofData(company_slug: str, file_name: str, file_type: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error"
         )
+
+@web_server.get("/debug/upload-dir")
+def debug_upload_dir():
+    return {
+        "upload_dir": str(UPLOAD_DIR),
+        "absolute": str(UPLOAD_DIR.resolve()),
+        "exists": UPLOAD_DIR.exists(),
+        "is_dir": UPLOAD_DIR.is_dir(),
+        "cwd": os.getcwd()
+    }
