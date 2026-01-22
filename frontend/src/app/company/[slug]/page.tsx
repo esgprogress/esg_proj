@@ -9,6 +9,7 @@ import BottomBar from "@/components/BottomBar";
 import Link from "next/link";
 import ReportProofSection from "@/app/company/[slug]/components/ReportProofSection";
 import {fetchProofData} from "@/lib/data/fetchProofData";
+import {EnvironmentalQuantitativeSectionV2} from "@/app/company/[slug]/components/EnvironmentalQuantitativeSectionV2";
 
 export default async function CompanyPage({
                                               params,
@@ -31,7 +32,7 @@ export default async function CompanyPage({
                         country={company.country ?? "USA"}
                     />
 
-                    <EnvironmentalQuantitativeSection environmental={company.environmental}/>
+                    <EnvironmentalQuantitativeSectionV2 environmental={company.environmental}/>
                     <EnvironmentalQualitativeSection rows={company.environmental.qualitative}/>
                     <SocialGovernanceSection social={company.social} governance={company.governance}/>
 

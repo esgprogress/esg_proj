@@ -9,17 +9,17 @@ import {
     ResponsiveContainer,
     Legend,
 } from "recharts"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { motion } from "framer-motion"
+import {Card, CardContent, CardHeader} from "@/components/ui/card"
+import {motion} from "framer-motion"
 import {ClaimedPoint, FuturePoint, Point} from "@/lib/types";
 import {useMemo, useState} from "react";
 import {Table, TableBody, TableCell, TableRow} from "@/components/ui/table";
 
 export function EnvironmentalMetricChartV2({
-                                             title,
-                                             unit,
-                                             data,
-                                         }: {
+                                               title,
+                                               unit,
+                                               data,
+                                           }: {
     title: string
     unit: string
     data: {
@@ -42,10 +42,10 @@ export function EnvironmentalMetricChartV2({
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            initial={{opacity: 0, y: 16}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
+            transition={{duration: 0.35, ease: "easeOut"}}
         >
             <Card className="rounded-2xl">
                 <CardHeader className="pb-2 space-y-1">
@@ -56,59 +56,57 @@ export function EnvironmentalMetricChartV2({
                 </CardHeader>
 
                 <CardContent className="h-[220px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <div className="flex flex-wrap gap-2">
-                            {years.map((year) => (
-                                <button
-                                    key={year}
-                                    onClick={() => setSelectedYear(year)}
-                                    className={`rounded-lg px-4 py-1.5 text-sm transition
+                    <div className="flex flex-wrap gap-2">
+                        {years.map((year) => (
+                            <button
+                                key={year}
+                                onClick={() => setSelectedYear(year)}
+                                className={`rounded-lg px-4 py-1.5 text-sm transition
       ${
-                                        selectedYear === year
-                                            ? "bg-foreground text-background"
-                                            : "bg-muted text-muted-foreground hover:bg-muted/70"
-                                    }`}
-                                >
-                                    {year}
-                                </button>
-                            ))}
-                        </div>
+                                    selectedYear === year
+                                        ? "bg-foreground text-background"
+                                        : "bg-muted text-muted-foreground hover:bg-muted/70"
+                                }`}
+                            >
+                                {year}
+                            </button>
+                        ))}
+                    </div>
 
-                        <Table>
-                            <TableBody>
-                                {filteredRows.claimed.map((claim) => (
-                                    <TableRow key={`claim-${claim.reported_year}`}>
-                                        <TableCell>
-                                            <p className="text-sm">Claimed in {claim.reported_year}</p>
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            {claim.value} {unit}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-
-                                <TableRow key={`current-${filteredRows.year}`}>
+                    <Table>
+                        <TableBody>
+                            {filteredRows.claimed.map((claim) => (
+                                <TableRow key={`claim-${claim.reported_year}`}>
                                     <TableCell>
-                                        <p className="text-sm">Current value</p>
+                                        <p className="text-sm">Claimed in {claim.reported_year}</p>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        {filteredRows.current} {unit}
+                                        {claim.value} {unit}
                                     </TableCell>
                                 </TableRow>
+                            ))}
 
-                                {filteredRows.future.map((future) => (
-                                    <TableRow key={`claim-${future.claimed_year}`}>
-                                        <TableCell>
-                                            <p className="text-sm">Future reporting for {future.claimed_year}</p>
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            {future.value} {unit}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </ResponsiveContainer>
+                            <TableRow key={`current-${filteredRows.year}`}>
+                                <TableCell>
+                                    <p className="text-sm">Current value</p>
+                                </TableCell>
+                                <TableCell className="text-right">
+                                    {filteredRows.current} {unit}
+                                </TableCell>
+                            </TableRow>
+
+                            {filteredRows.future.map((future) => (
+                                <TableRow key={`claim-${future.claimed_year}`}>
+                                    <TableCell>
+                                        <p className="text-sm">Future reporting for {future.claimed_year}</p>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        {future.value} {unit}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </CardContent>
             </Card>
         </motion.div>

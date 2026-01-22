@@ -139,9 +139,13 @@ export function normalizeEnvironmentalQuantitativeMetricV2(
         }))
         .sort((a, b) => a.year - b.year)
 
+    // Sort to remove years with no current value
+
+    const only_valid_current_data = data.filter((elem) => elem.current !== null)
+
     return {
         name,
         unit: metric.unit,
-        data,
+        data: only_valid_current_data,
     }
 }
