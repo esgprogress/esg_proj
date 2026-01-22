@@ -38,6 +38,16 @@ def insert_json_into_mongo(data, company_name):
         current = element["current"]           # {year, value}
         future = element.get("future", [])     # list of {year, value}
 
+        future_with_current_year = [
+            {
+                "year": elem["year"],
+                "value": elem["value"],
+                "reported_year": data["company_year"]
+            }
+            for elem in future
+        ]
+
+
         # Ensure criterion object exists
         collection.update_one(
             {
@@ -76,7 +86,7 @@ def insert_json_into_mongo(data, company_name):
                 {
                     "$push": {
                         "environmental.quantitative.$[elem].future": {
-                            "$each": future
+                            "$each": future_with_current_year
                         }
                     }
                 },

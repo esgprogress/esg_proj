@@ -3,7 +3,7 @@ import {auth0} from '@/lib/auth/auth0'
 export async function GET(req: Request) {
     try {
         const accessToken = await auth0.getAccessToken({
-            audience: 'https://api.esg-dashboard.com'
+            audience: process.env.AUTH0_API_AUDIENCE
         });
 
         return new Response(JSON.stringify({accessToken}));
