@@ -1,0 +1,134 @@
+import ApiPlayground from "../../../components/ApiPlayground";
+
+# Health Check
+
+-----
+
+<span className="inline-flex items-center gap-2">
+  <span
+      className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+    GET
+  </span>
+  <span className="text-sm font-mono text-gray-600 dark:text-gray-400">
+    /api/health_check
+  </span>
+</span>
+
+---
+
+## Try Me!
+
+<ApiPlayground
+    endpoint="/api/health_check"
+    method="GET"
+    responseSchema={{
+        title: "name",
+        fields: {
+            ok: {
+                type: "integer",
+                description: "1 if good"
+            }
+        }
+    }}/>
+
+----
+
+## Summary
+
+Returns the status of the backend and whether it is ready to service queries.
+
+---
+
+## Description
+
+The **Health Check** API provides a basic health check.
+
+Key characteristics of this endpoint:
+
+- Publicly accessible (no authentication required)
+- No query parameters or request body
+- Clear separation between database errors and unexpected server failures
+
+---
+
+## Endpoint
+
+```http
+GET /api/health_check
+```
+
+-----
+
+### Request
+This endpoint does not accept any parameters
+
+#### Headers
+This endpoint **does not** accept any parameters
+
+| Header   | Required | Description                    |
+|----------|----------|--------------------------------|
+| `Accept` | Optional | Defaults to `application/json` |
+
+----
+
+### Response Schema
+
+#### Success - `200 OK`
+
+```json lines
+Status
+```
+
+##### Status Object
+
+| Field | Required    | Type     | Description        |
+|-------|-------------|----------|--------------------|
+| `ok`  | `mandatory` | `number` | `1` if all is fine |
+
+##### Example Response
+
+```json lines
+{
+  "ok": 1
+}
+```
+
+------
+
+### Error Codes & Response Types
+
+#### ```503 Service Unavailable```
+Returned when the database is temporarily unavailable, or a query fails due to a database issue
+
+##### Response Body
+
+``` json lines
+{
+    "detail" : "Database temporarily unavailable"
+}
+```
+
+##### Typical Causes
+1. MongoDB Connection Issues
+2. Database timeout or query failure for a non-general reason
+
+------
+
+#### `500 Internal Server Error`
+
+Returned when an unexpected server-side error occurs.
+
+##### Response Body
+
+```json lines
+{
+    "detail" : "Internal server error"
+}
+```
+
+##### Typical Causes
+1. Unhandled runtime exception
+2. Application-level failure outside database operations.
+
+-----
+
