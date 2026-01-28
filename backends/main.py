@@ -10,7 +10,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import FileResponse
 
 from backends.auth.auth0_auth import auth0
-from backends.constants.mongo_client import data_collection, industries_collection, questions_collection
+from backends.constants.mongo_client import data_collection, industries_collection, questions_collection, database
 import json
 from backends.data_handling.insert_schema_into_mongo import insert_json_into_mongo
 from backends.data_handling.json_schema_gpt import extract_data
@@ -459,3 +459,24 @@ async def downloadProofData(company_slug: str, file_name: str, file_type: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error"
         )
+
+
+@web_server.get('/api/health_check', summary="Health check", description="Health check")
+async def healthCheck():
+    try:
+        db_health = database.command("ping")
+        return db_health
+    except PyMongoError as e:
+        logger.exception("MongoDB error in health check: " + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database error in MongoDB"
+        )
+
+    except Exception as e:
+        logger.exception("General system error :" + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error"
+        )
+
