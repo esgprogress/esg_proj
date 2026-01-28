@@ -10,7 +10,7 @@ import {
     Legend,
 } from "recharts"
 import {Card, CardContent, CardHeader} from "@/components/ui/card"
-import {motion} from "framer-motion"
+import {AnimatePresence, motion} from "framer-motion"
 import {ClaimedPoint, FuturePoint, Point} from "@/lib/types";
 import {useMemo, useState} from "react";
 import {Table, TableBody, TableCell, TableRow} from "@/components/ui/table";
@@ -73,40 +73,50 @@ export function EnvironmentalMetricChartV2({
                         ))}
                     </div>
 
-                    <Table>
-                        <TableBody>
-                            {filteredRows.claimed.map((claim) => (
-                                <TableRow key={`claim-${claim.reported_year}`}>
-                                    <TableCell>
-                                        <p className="text-sm">Claimed in {claim.reported_year}</p>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        {claim.value} {unit}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={selectedYear}
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            exit={{opacity: 0}}
+                            transition={{duration: 0.2}}
+                        >
+                            <Table>
+                                <TableBody>
+                                    {filteredRows.claimed.map((claim) => (
+                                        <TableRow key={`claim-${claim.reported_year}`}>
+                                            <TableCell>
+                                                <p className="text-sm">Claimed in {claim.reported_year}</p>
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                {claim.value} {unit}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
 
-                            <TableRow key={`current-${filteredRows.year}`}>
-                                <TableCell>
-                                    <p className="text-sm">Current value</p>
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    {filteredRows.current} {unit}
-                                </TableCell>
-                            </TableRow>
+                                    <TableRow key={`current-${filteredRows.year}`}>
+                                        <TableCell>
+                                            <p className="text-sm">Current value</p>
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            {filteredRows.current} {unit}
+                                        </TableCell>
+                                    </TableRow>
 
-                            {filteredRows.future.map((future) => (
-                                <TableRow key={`claim-${future.claimed_year}`}>
-                                    <TableCell>
-                                        <p className="text-sm">Future reporting for {future.claimed_year}</p>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        {future.value} {unit}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                                    {filteredRows.future.map((future) => (
+                                        <TableRow key={`claim-${future.claimed_year}`}>
+                                            <TableCell>
+                                                <p className="text-sm">Goal for {future.claimed_year}</p>
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                {future.value} {unit}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </motion.div>
+                    </AnimatePresence>
                 </CardContent>
             </Card>
         </motion.div>
