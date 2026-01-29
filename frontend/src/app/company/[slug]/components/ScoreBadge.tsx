@@ -1,8 +1,9 @@
-import {cn} from "@/lib/utils"
+import {cn, socialGovernanceMainShowVariants, socialGovernanceTooltipVariants} from "@/lib/utils"
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 
 export function ScoreBadge({score, tooltip_side}: { score: number, tooltip_side: "left" | "right" }) {
-    const label = ["No Mention", "Weak", "Moderate", "Strong"][score]
+    const mainLabel = socialGovernanceMainShowVariants[score]
+    const tooltipLabel = socialGovernanceTooltipVariants[score]
 
     return (
         <TooltipProvider>
@@ -17,11 +18,23 @@ export function ScoreBadge({score, tooltip_side}: { score: number, tooltip_side:
                         score === 0 && "bg-zinc-100 text-zinc-600"
                     )}
                 >
-                    {label}
+                    {mainLabel}
                 </span>
                 </TooltipTrigger>
-                <TooltipContent side={tooltip_side}>
-                    <p>{label}</p>
+                <TooltipContent
+                    side={tooltip_side}
+                    className="
+                        rounded-lg
+                        bg-black
+                        px-3 py-1.5
+                        text-sm text-white
+                        shadow-xl
+                        animate-in fade-in zoom-in-95
+                    max-w-xs
+                    whitespace-normal
+                    break-words"
+                >
+                    {tooltipLabel}
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>
