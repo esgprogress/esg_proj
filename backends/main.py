@@ -479,3 +479,48 @@ async def healthCheck():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error"
         )
+
+@web_server.get('/api/companies/logo', summary="Fetch company logo", description="Fetch company logo")
+async def getCompanyLogo(company_slug: str):
+    try:
+        # Fetch current company name
+        company_name_result = data_collection.find({"slug": company_slug}, {"_id": 0, "name": 1, "slug": 1, "image_filepath": 1})
+        json_dump = list(company_name_result)
+        if not json_dump:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="company doesn't exist"
+            )
+        else:
+            company_filepath_wrt_upload_dir = company_name_result[0]["image_filepath"]
+
+            # Create filepath
+            image_filepath = UPLOAD_DIR / company_filepath_wrt_upload_dir
+
+            # Check for existence
+            if not os.path.exists(image_filepath):
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="company image doesn't exist"
+                )
+
+            head, tail = os.path.split(image_filepath)
+            [name, extension] = tail.split(".")
+
+            return FileResponse(str(image_filepath), filename=tail, media_type=f"image/{extension}")
+
+    except PyMongoError as e:
+        logger.exception("MongoDB error in getCompanyLogo: " + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database error in MongoDB"
+        )
+
+    except Exception as e:
+        logger.exception("General system error :" + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error"
+        )
+
+
