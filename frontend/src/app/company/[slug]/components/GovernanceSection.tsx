@@ -55,7 +55,7 @@ export function GovernanceSection({ governance }: { governance: any[] }) {
                     exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.25, ease: "easeInOut" }}
                 >
-                    <SGScoreTable rows={rowsForYear} />
+                    <SGScoreTable rows={rowsForYear} tooltip_side={"right"}/>
                 </motion.div>
             </AnimatePresence>
         </section>

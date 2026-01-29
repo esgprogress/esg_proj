@@ -1,8 +1,6 @@
 "use client"
 
-import { EnvironmentalMetricChart } from "./EnvironmentalMetricChart"
 import {
-    normalizeEnvironmentalQuantitativeMetric,
     normalizeEnvironmentalQuantitativeMetricV2
 } from "@/lib/esg/normalizeEnvironmental"
 import {EnvironmentalMetricChartV2} from "@/app/company/[slug]/components/EnvironmentalMetricChartV2";
