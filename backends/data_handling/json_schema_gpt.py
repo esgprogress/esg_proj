@@ -68,7 +68,7 @@ def extract_data(path_to_context_file: str):
 
     # Step 3: generate response
     response = model_client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3-flash-preview",
         contents=prompt,
         config={
             "response_mime_type": "application/json",

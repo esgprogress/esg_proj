@@ -437,9 +437,10 @@ async def fetchProofData(company_slug: str):
 
             files = []
             for file in files_in_main_file_path:
-                size = round(os.path.getsize(main_file_path / file) / 1048576, 2)
-                [file_name, file_type] = file.split(".")
-                files.append({"file_name": file_name, "file_type": file_type, "size": size})
+                if (file.endswith(".pdf")):
+                    size = round(os.path.getsize(main_file_path / file) / 1048576, 2)
+                    file_splits = file.split(".")
+                    files.append({"file_name": ".".join(file_splits[:len(file_splits) - 1]), "file_type": file_splits[-1], "size": size})
 
             return files
 

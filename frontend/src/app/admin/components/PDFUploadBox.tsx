@@ -96,12 +96,6 @@ export default function PDFUploadBox({ companies }: { companies: string[] }) {
                                     const file = e.target.files?.[0];
                                     if (!file) return;
 
-                                    if (!fileName) {
-                                        setUploadStatus("error");
-                                        setErrorMessage("Please select a company first");
-                                        return;
-                                    }
-
                                     setIsUploading(true);
                                     setUploadStatus(null);
                                     setErrorMessage(null);
@@ -172,7 +166,7 @@ export default function PDFUploadBox({ companies }: { companies: string[] }) {
                                 onChange={handleFileNameChange}
                             />
                         </div>
-                        
+
                     </>
                 )}
             </div>
