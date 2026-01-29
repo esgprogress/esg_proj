@@ -1,0 +1,16 @@
+meta {
+  name: Health Check
+  type: http
+  seq: 15
+}
+
+get {
+  url: http://localhost:80/api/health_check
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

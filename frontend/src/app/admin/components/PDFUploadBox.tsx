@@ -1,24 +1,28 @@
 "use client"
 
-import {FileText, LogIn, UploadCloud} from "lucide-react";
-import {useUser} from "@auth0/nextjs-auth0/client";
+import { FileText, LogIn, UploadCloud } from "lucide-react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import CompanySelectDropdown from "@/app/admin/components/CompanySelectDropdown";
-import React, {useState} from "react";
+import React, { useState } from "react";
 
-export default function PDFUploadBox({companies}: {companies: string[]}) {
+export default function PDFUploadBox({ companies }: { companies: string[] }) {
     const { user, isLoading } = useUser();
-    const [ fileName, setFileName ] = useState<string>();
+    const [fileName, setFileName] = useState<string>();
+
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadStatus, setUploadStatus] = useState<"success" | "error" | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleFileNameChange = (e: string) => {
         setFileName(e);
-    }
+    };
 
     if (isLoading) {
         return (
             <div className="flex min-h-screen items-center justify-center">
                 <p className="text-sm text-muted-foreground">Loading…</p>
             </div>
-        )
+        );
     }
 
     return (
@@ -34,7 +38,6 @@ export default function PDFUploadBox({companies}: {companies: string[]}) {
                     </p>
                 </div>
 
-                {/* Auth state */}
                 {!user ? (
                     <a
                         href="/auth/login"
@@ -63,15 +66,26 @@ export default function PDFUploadBox({companies}: {companies: string[]}) {
                         {/* Upload box */}
                         <label
                             htmlFor="pdf"
-                            className="group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed p-6 text-center transition hover:bg-muted"
+                            className={`group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed p-6 text-center transition
+                                ${isUploading ? "opacity-50 pointer-events-none" : "hover:bg-muted"}
+                            `}
                         >
-                            <UploadCloud className="h-6 w-6 text-muted-foreground group-hover:text-foreground" />
-                            <p className="text-sm font-medium">
-                                Drag & drop your PDF
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                or click to browse
-                            </p>
+                            {isUploading ? (
+                                <>
+                                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+                                    <p className="text-sm">Uploading…</p>
+                                </>
+                            ) : (
+                                <>
+                                    <UploadCloud className="h-6 w-6 text-muted-foreground group-hover:text-foreground" />
+                                    <p className="text-sm font-medium">
+                                        Drag & drop your PDF
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                        or click to browse
+                                    </p>
+                                </>
+                            )}
 
                             <input
                                 id="pdf"
@@ -79,38 +93,65 @@ export default function PDFUploadBox({companies}: {companies: string[]}) {
                                 accept="application/pdf"
                                 className="hidden"
                                 onChange={async (e) => {
-                                    const json = await fetch('/api/auth')
-                                    if (!json.ok) {
-                                        const text = await json.text();
-                                        throw new Error(text);
-                                    }
+                                    const file = e.target.files?.[0];
+                                    if (!file) return;
 
-                                    const {accessToken} = await json.json()
+                                    setIsUploading(true);
+                                    setUploadStatus(null);
+                                    setErrorMessage(null);
 
-                                    const file = e.target.files?.[0]
-                                    if (!file) return
+                                    try {
+                                        const json = await fetch("/api/auth");
+                                        if (!json.ok) throw new Error(await json.text());
 
-                                    const formData = new FormData()
-                                    formData.append("file", file)
+                                        const { accessToken } = await json.json();
 
-                                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies/addData?company_name=${encodeURIComponent(fileName)}`, {
-                                        method: "POST",
-                                        body: formData,
-                                        headers: {
-                                            Authorization: `Bearer ${accessToken.token}`,
+                                        const formData = new FormData();
+                                        formData.append("file", file);
+
+                                        const res = await fetch(
+                                            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies/addData?company_name=${encodeURIComponent(fileName)}`,
+                                            {
+                                                method: "POST",
+                                                body: formData,
+                                                headers: {
+                                                    Authorization: `Bearer ${accessToken.token}`,
+                                                },
+                                            }
+                                        );
+
+                                        if (!res.ok) {
+                                            throw new Error(await res.text());
                                         }
-                                    })
 
-                                    if (!res.ok) {
-                                        console.error("Upload failed")
-                                        return
+                                        await res.json();
+                                        setUploadStatus("success");
+
+                                        // Auto reset success message
+                                        setTimeout(() => setUploadStatus(null), 3000);
+                                    } catch (err: any) {
+                                        console.error(err);
+                                        setUploadStatus("error");
+                                        setErrorMessage(err.message ?? "Upload failed");
+                                    } finally {
+                                        setIsUploading(false);
                                     }
-
-                                    const data = await res.json()
-                                    console.log("Upload success:", data)
                                 }}
                             />
                         </label>
+
+                        {/* Feedback */}
+                        {uploadStatus === "success" && (
+                            <p className="mt-3 text-center text-sm text-green-600">
+                                Upload successful
+                            </p>
+                        )}
+
+                        {uploadStatus === "error" && (
+                            <p className="mt-3 text-center text-sm text-red-600">
+                                {errorMessage}
+                            </p>
+                        )}
 
                         {/* Helper */}
                         <p className="mt-3 flex items-center justify-center gap-1 text-xs text-muted-foreground">
@@ -118,20 +159,17 @@ export default function PDFUploadBox({companies}: {companies: string[]}) {
                             Max size 100MB
                         </p>
 
-                        <div className='items-center justify-center flex mt-3'>
-                            <CompanySelectDropdown companies={companies} value={fileName} onChange={handleFileNameChange}/>
+                        <div className="mt-3 flex items-center justify-center">
+                            <CompanySelectDropdown
+                                companies={companies}
+                                value={fileName}
+                                onChange={handleFileNameChange}
+                            />
                         </div>
 
-                        {/* Logout */}
-                        <a
-                            href="/auth/logout"
-                            className="mt-6 block text-center text-xs text-muted-foreground hover:underline"
-                        >
-                            Sign out
-                        </a>
                     </>
                 )}
             </div>
         </main>
-    )
+    );
 }

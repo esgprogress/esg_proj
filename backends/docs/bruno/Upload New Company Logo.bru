@@ -1,0 +1,24 @@
+meta {
+  name: Upload New Company Logo
+  type: http
+  seq: 17
+}
+
+post {
+  url: http://localhost:80/api/companies/logo?company_slug=apple
+  body: multipartForm
+  auth: bearer
+}
+
+params:query {
+  company_slug: apple
+}
+
+body:multipart-form {
+  file: @file(C:\Users\ArjunSanghi\Desktop\intern_work\esg_proj\backends\data\abbott\Abbott-2022-Global-Sustainability-Report-June-2023.pdf)
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

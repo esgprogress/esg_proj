@@ -11,6 +11,7 @@ import {Separator} from "@/components/ui/separator";
 import TopBar from "@/components/TopBar";
 import BottomBar from "@/components/BottomBar";
 import Link from "next/link";
+import {CompanyAvatar} from "@/components/CompanyAvatar";
 
 function Stat({label, value, sub}: { label: string; value: string; sub?: string }) {
     return (
@@ -133,10 +134,11 @@ export default function RootLayout() {
                                     {filtered.slice(0, 5).map((c) => (
                                         <Link href={`/company/${c.slug}`} key={c.slug}>
                                             <div
-                                                key={c.name}
-                                                className="flex items-center justify-between rounded-2xl border p-3 bg-[#8d9765]"
+                                                className="flex items-center gap-3 rounded-2xl border p-3 bg-[#8d9765]"
                                             >
-                                                <div>
+                                                <CompanyAvatar slug={c.slug} name={c.name} size={35}/>
+
+                                                <div className="flex flex-col">
                                                     <div className="text-sm font-medium">{c.name}</div>
                                                     <div className="text-xs text-muted-foreground">
                                                         {c.industry} • {c.country}

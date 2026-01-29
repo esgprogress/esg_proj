@@ -30,12 +30,14 @@ web_server = FastAPI(title="ESGProject")
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 import sys, os
+
 print("CWD:", os.getcwd())
 print("sys.path:", sys.path)
 
 web_server.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://esgprogress.org", "https://docs.esgprogress.org", "http://localhost:3002", "https://www.esgprogress.org", "https://api.esgprogress.org"],
+    allow_origins=["http://localhost:3000", "https://esgprogress.org", "https://docs.esgprogress.org",
+                   "http://localhost:3002", "https://www.esgprogress.org", "https://api.esgprogress.org"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,6 +47,7 @@ web_server.add_middleware(
     RouterLoggingMiddleware,
     logger=logging.getLogger(__name__),
 )
+
 
 @web_server.get(
     "/api/fetchIndustries",
@@ -82,11 +85,14 @@ async def fetchIndustries():
             detail="Internal server error",
         )
 
-@web_server.get("/api/fetchCompaniesByIndustry", summary="Retrieve companies in industry", description="Retrieve all companies operating in a given industry")
+
+@web_server.get("/api/fetchCompaniesByIndustry", summary="Retrieve companies in industry",
+                description="Retrieve all companies operating in a given industry")
 async def fetchCompaniesByIndustry(industry: str):
     try:
         # Query MongoDB
-        result = data_collection.find({"industry": industry}, {"_id": 0, "industry": 1, "name": 1, "country": 1, "slug": 1})
+        result = data_collection.find({"industry": industry},
+                                      {"_id": 0, "industry": 1, "name": 1, "country": 1, "slug": 1})
 
         # Pull results into eagerly evaluated format
         json_dump = list(result)
@@ -110,8 +116,8 @@ async def fetchCompaniesByIndustry(industry: str):
         )
 
 
-
-@web_server.get("/api/fetchQuestions", summary="Fetch questions", description="Fetch all questions for companies operating in a given industry")
+@web_server.get("/api/fetchQuestions", summary="Fetch questions",
+                description="Fetch all questions for companies operating in a given industry")
 async def fetchQuestions(industry: str):
     try:
         # Mongo queries
@@ -147,8 +153,10 @@ async def fetchQuestions(industry: str):
         )
 
 
-@web_server.put("/api/addQuestionSpecific", summary="Add new question to env list of industry", description="Given a particular industry, add a new question to the list of industry-specific questions that will be asked")
-async def addQuestionSpecific(industry: str, question: str, qualitative: bool, claims: dict = Depends(auth0.require_auth)):
+@web_server.put("/api/addQuestionSpecific", summary="Add new question to env list of industry",
+                description="Given a particular industry, add a new question to the list of industry-specific questions that will be asked")
+async def addQuestionSpecific(industry: str, question: str, qualitative: bool,
+                              claims: dict = Depends(auth0.require_auth)):
     try:
         if qualitative:
             questions_collection.update_one({"industry": industry}, {"$push": {"qualitative": question}}, upsert=True)
@@ -172,7 +180,8 @@ async def addQuestionSpecific(industry: str, question: str, qualitative: bool, c
         )
 
 
-@web_server.put("/api/addCategory", summary="Add new industry category", description="Add a new industry category to the list of industries")
+@web_server.put("/api/addCategory", summary="Add new industry category",
+                description="Add a new industry category to the list of industries")
 async def addCategory(industry: str, claims: dict = Depends(auth0.require_auth)):
     try:
         industries_collection.update_one({}, {"$push": {"industries": industry}}, upsert=True)
@@ -194,16 +203,20 @@ async def addCategory(industry: str, claims: dict = Depends(auth0.require_auth))
         )
 
 
-@web_server.put("/api/addQuestionGeneral", summary="Add new generic question", description="Add a new generic question to the list of questions that every company is subjected to")
-async def addQuestionGeneral(type: str, question: str, qualitative: bool = False, claims: dict = Depends(auth0.require_auth)):
+@web_server.put("/api/addQuestionGeneral", summary="Add new generic question",
+                description="Add a new generic question to the list of questions that every company is subjected to")
+async def addQuestionGeneral(type: str, question: str, qualitative: bool = False,
+                             claims: dict = Depends(auth0.require_auth)):
     try:
         if type == "social" or type == "governance":
             questions_collection.update_one({"industry": "general"}, {"$push": {type: question}}, upsert=True)
         else:
             if qualitative:
-                questions_collection.update_one({"industry": "general"}, {"$push": {"environmental.qualitative": question}}, upsert=True)
+                questions_collection.update_one({"industry": "general"},
+                                                {"$push": {"environmental.qualitative": question}}, upsert=True)
             else:
-                questions_collection.update_one({"industry": "general"}, {"$push": {"environmental.quantitative": question}}, upsert=True)
+                questions_collection.update_one({"industry": "general"},
+                                                {"$push": {"environmental.quantitative": question}}, upsert=True)
 
     except PyMongoError as e:
         # DB Error
@@ -222,7 +235,8 @@ async def addQuestionGeneral(type: str, question: str, qualitative: bool = False
         )
 
 
-@web_server.delete("/api/removeCategory", summary="Remove a category from the list", description="Remove a category from the list")
+@web_server.delete("/api/removeCategory", summary="Remove a category from the list",
+                   description="Remove a category from the list")
 async def removeCategory(industry: str, claims: dict = Depends(auth0.require_auth)):
     try:
         industries_collection.delete_one({}, {"$pull": {"industries": industry}}, upsert=True)
@@ -243,16 +257,21 @@ async def removeCategory(industry: str, claims: dict = Depends(auth0.require_aut
             detail="Internal server error"
         )
 
-@web_server.delete("/api/removeQuestionGeneral", summary="Remove general question", description="Remove general question from the list")
-async def removeQuestionGeneral(type: str, question: str, qualitative: bool = False, claims: dict = Depends(auth0.require_auth)):
+
+@web_server.delete("/api/removeQuestionGeneral", summary="Remove general question",
+                   description="Remove general question from the list")
+async def removeQuestionGeneral(type: str, question: str, qualitative: bool = False,
+                                claims: dict = Depends(auth0.require_auth)):
     try:
         if type == "social" or type == "governance":
             questions_collection.delete_one({"industry": "general"}, {"$pull": {type: question}}, upsert=True)
         else:
             if qualitative:
-                questions_collection.delete_one({"industry": "general"}, {"$pull": {"environmental.qualitative": question}}, upsert=True)
+                questions_collection.delete_one({"industry": "general"},
+                                                {"$pull": {"environmental.qualitative": question}}, upsert=True)
             else:
-                questions_collection.delete_one({"industry": "general"}, {"$pull": {"environmental.quantitative": question}}, upsert=True)
+                questions_collection.delete_one({"industry": "general"},
+                                                {"$pull": {"environmental.quantitative": question}}, upsert=True)
 
     except PyMongoError as e:
         # Database error
@@ -271,8 +290,10 @@ async def removeQuestionGeneral(type: str, question: str, qualitative: bool = Fa
         )
 
 
-@web_server.delete("/api/removeQuestionSpecific", summary="Remove specific question", description="Remove industry-specific question from the list")
-async def removeQuestionSpecific(industry: str, question: str, qualitative: bool, claims: dict = Depends(auth0.require_auth)):
+@web_server.delete("/api/removeQuestionSpecific", summary="Remove specific question",
+                   description="Remove industry-specific question from the list")
+async def removeQuestionSpecific(industry: str, question: str, qualitative: bool,
+                                 claims: dict = Depends(auth0.require_auth)):
     try:
         if qualitative:
             questions_collection.delete_one({"industry": industry}, {"$pull": {"qualitative": question}}, upsert=True)
@@ -354,7 +375,8 @@ async def fetchCompany(company_slug: str):
         )
 
 
-@web_server.post("/api/companies/addData", summary="Upload new report", description="Upload new report and autofill details into database")
+@web_server.post("/api/companies/addData", summary="Upload new report",
+                 description="Upload new report and autofill details into database")
 async def add_data(company_name: str, file: UploadFile = File(...), claims: dict = Depends(auth0.require_auth)):
     logger.warning("add_data CALLED")
 
@@ -415,9 +437,10 @@ async def fetchProofData(company_slug: str):
 
             files = []
             for file in files_in_main_file_path:
-                size = round(os.path.getsize(main_file_path / file) / 1048576, 2)
-                [file_name, file_type] = file.split(".")
-                files.append({"file_name": file_name, "file_type": file_type, "size": size})
+                if (file.endswith(".pdf")):
+                    size = round(os.path.getsize(main_file_path / file) / 1048576, 2)
+                    file_splits = file.split(".")
+                    files.append({"file_name": ".".join(file_splits[:len(file_splits) - 1]), "file_type": file_splits[-1], "size": size})
 
             return files
 
@@ -436,7 +459,8 @@ async def fetchProofData(company_slug: str):
         )
 
 
-@web_server.get('/api/proof/downloadData', summary="Download proof data", description="Download a given proof data file")
+@web_server.get('/api/proof/downloadData', summary="Download proof data",
+                description="Download a given proof data file")
 async def downloadProofData(company_slug: str, file_name: str, file_type: str):
     try:
         company_name_result = data_collection.find({"slug": company_slug}, {"_id": 0, "name": 1, "slug": 1})
@@ -480,3 +504,101 @@ async def healthCheck():
             detail="Internal server error"
         )
 
+
+@web_server.get('/api/companies/logo', summary="Fetch company logo", description="Fetch company logo")
+async def getCompanyLogo(company_slug: str):
+    try:
+        # Fetch current company name
+        company_name_result = data_collection.find({"slug": company_slug},
+                                                   {"_id": 0, "name": 1, "slug": 1, "image_filepath": 1})
+        json_dump = list(company_name_result)
+        if not json_dump:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="company doesn't exist"
+            )
+        else:
+            company_filepath_wrt_upload_dir = json_dump[0]["image_filepath"]
+            company_name = json_dump[0]["name"]
+
+            # Create filepath
+            image_filepath = UPLOAD_DIR / company_name / company_filepath_wrt_upload_dir
+
+            # Check for existence
+            if not os.path.exists(image_filepath):
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail="company image doesn't exist"
+                )
+
+            head, tail = os.path.split(image_filepath)
+            [name, extension] = tail.split(".")
+
+            return FileResponse(str(image_filepath), filename=tail, media_type=f"image/{extension}")
+
+    except PyMongoError as e:
+        logger.exception("MongoDB error in getCompanyLogo: " + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database error in MongoDB"
+        )
+
+    except Exception as e:
+        logger.exception("General system error :" + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error"
+        )
+
+
+@web_server.post('/api/companies/logo', summary="Upload or change company logo",
+                 description="Upload or change company logo")
+async def uploadCompanyLogo(company_slug: str, file: UploadFile = File(...),
+                            claims: dict = Depends(auth0.require_auth)):
+    try:
+        # step 1: find company name
+        company_name_result = data_collection.find({"slug": company_slug},
+                                                   {"_id": 0, "name": 1, "slug": 1, "image_filepath": 1})
+        json_dump = list(company_name_result)
+        if not json_dump:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="company doesn't exist"
+            )
+
+        else:
+            temporary_file_path = UPLOAD_DIR / file.filename
+
+            with temporary_file_path.open("wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+
+            main_company_name = json_dump[0]['name']
+            permanent_file_dir = UPLOAD_DIR / main_company_name / (
+                        file.filename)
+            permanent_file_dir.parent.mkdir(parents=True, exist_ok=True)
+            os.rename(temporary_file_path, permanent_file_dir)
+
+            # delete the old file
+            if "image_filepath" in json_dump[0].keys():
+                old_company_logo = json_dump[0]['image_filepath']
+                old_company_logo_fullpath = UPLOAD_DIR / old_company_logo
+                if old_company_logo_fullpath.exists():
+                    old_company_logo_fullpath.unlink()
+
+            # add the new filepath in the database
+            data_collection.update_one({"slug": company_slug},
+                                       {"$set": {"image_filepath": file.filename}})
+
+    except PyMongoError as e:
+        logger.exception("MongoDB error in uploadCompanyLogo: " + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database error in MongoDB"
+        )
+
+    except Exception as e:
+        logger.exception("General system error :" + str(e))
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error"
+        )

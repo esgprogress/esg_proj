@@ -28,6 +28,7 @@ export default async function CompanyPage({
                         name={company.name}
                         industry={company.industry}
                         country={company.country ?? "USA"}
+                        slug={company.slug}
                     />
 
                     <EnvironmentalQuantitativeParent company={company}/>
