@@ -551,7 +551,7 @@ async def getCompanyLogo(company_slug: str):
 
 @web_server.post('/api/companies/logo', summary="Upload or change company logo",
                  description="Upload or change company logo")
-async def uploadCompanyLogo(company_slug: str, file: UploadFile = File(...)):
+async def uploadCompanyLogo(company_slug: str, file: UploadFile = File(...), claims: dict = Depends(auth0.require_auth)):
     try:
         # step 1: find company name
         company_name_result = data_collection.find({"slug": company_slug},
