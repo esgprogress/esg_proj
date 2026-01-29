@@ -517,10 +517,11 @@ async def getCompanyLogo(company_slug: str):
                 detail="company doesn't exist"
             )
         else:
-            company_filepath_wrt_upload_dir = company_name_result[0]["image_filepath"]
+            company_filepath_wrt_upload_dir = json_dump[0]["image_filepath"]
+            company_name = json_dump[0]["name"]
 
             # Create filepath
-            image_filepath = UPLOAD_DIR / company_filepath_wrt_upload_dir
+            image_filepath = UPLOAD_DIR / company_name / company_filepath_wrt_upload_dir
 
             # Check for existence
             if not os.path.exists(image_filepath):
@@ -551,7 +552,8 @@ async def getCompanyLogo(company_slug: str):
 
 @web_server.post('/api/companies/logo', summary="Upload or change company logo",
                  description="Upload or change company logo")
-async def uploadCompanyLogo(company_slug: str, file: UploadFile = File(...), claims: dict = Depends(auth0.require_auth)):
+async def uploadCompanyLogo(company_slug: str, file: UploadFile = File(...),
+                            claims: dict = Depends(auth0.require_auth)):
     try:
         # step 1: find company name
         company_name_result = data_collection.find({"slug": company_slug},
@@ -570,17 +572,21 @@ async def uploadCompanyLogo(company_slug: str, file: UploadFile = File(...), cla
                 shutil.copyfileobj(file.file, buffer)
 
             main_company_name = json_dump[0]['name']
-            permanent_file_dir = UPLOAD_DIR / main_company_name / (file.filename + "." + file.content_type.split("/")[-1])
+            permanent_file_dir = UPLOAD_DIR / main_company_name / (
+                        file.filename)
             permanent_file_dir.parent.mkdir(parents=True, exist_ok=True)
             os.rename(temporary_file_path, permanent_file_dir)
 
             # delete the old file
-            old_company_logo = json_dump[0]['image_filepath']
-            old_company_logo_fullpath = UPLOAD_DIR / old_company_logo
-            os.remove(old_company_logo_fullpath)
+            if "image_filepath" in json_dump[0].keys():
+                old_company_logo = json_dump[0]['image_filepath']
+                old_company_logo_fullpath = UPLOAD_DIR / old_company_logo
+                if old_company_logo_fullpath.exists():
+                    old_company_logo_fullpath.unlink()
 
             # add the new filepath in the database
-            data_collection.update_one({"slug": company_slug}, {"$set": {"image_filepath": str(main_company_name / (file.filename + "." + file.content_type.split("/")[-1]))}})
+            data_collection.update_one({"slug": company_slug},
+                                       {"$set": {"image_filepath": file.filename}})
 
     except PyMongoError as e:
         logger.exception("MongoDB error in uploadCompanyLogo: " + str(e))

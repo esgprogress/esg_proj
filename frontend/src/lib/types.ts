@@ -43,3 +43,10 @@ export type RawPoint = {
     year: number
     value: number
 }
+
+export type Company = {
+    name: string;
+    slug: string;
+    country: string;
+    industry: string;
+}

@@ -172,14 +172,7 @@ export default function PDFUploadBox({ companies }: { companies: string[] }) {
                                 onChange={handleFileNameChange}
                             />
                         </div>
-
-                        {/* Logout */}
-                        <a
-                            href="/auth/logout"
-                            className="mt-6 block text-center text-xs text-muted-foreground hover:underline"
-                        >
-                            Sign out
-                        </a>
+                        
                     </>
                 )}
             </div>
