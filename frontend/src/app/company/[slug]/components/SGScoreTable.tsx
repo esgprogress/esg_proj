@@ -20,6 +20,7 @@ export function SGScoreTable({ rows }: { rows: SocialGovernanceRow[] }) {
                         </TableCell>
                         <TableCell className="text-right">
                             <ScoreBadge score={row.rating}/>
+
                         </TableCell>
                     </TableRow>
                 ))}
