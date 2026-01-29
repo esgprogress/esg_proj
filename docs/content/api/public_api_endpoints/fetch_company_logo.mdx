@@ -1,0 +1,120 @@
+import ApiPlayground from "../../../components/ApiPlayground";
+
+# Fetch Company Logo
+
+----
+
+<span className="inline-flex items-center gap-2">
+  <span
+      className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+    GET
+  </span>
+  <span className="text-sm font-mono text-gray-600 dark:text-gray-400">
+    /api/companies/logo
+  </span>
+</span>
+
+---
+
+## Try Me!
+
+<ApiPlayground
+    endpoint="/api/companies/logo"
+    method="GET"
+    responseSchema={{
+        title: "name",
+        fields: {
+            image: {
+                type: "multipart/form",
+                description: "Image with company logo"
+            }
+        }
+    }}/>
+
+----
+
+## Summary
+
+Returns the logo (in a browser-friendly image format) of the company whose slug is passed.
+
+This endpoint is designed for **read-only access** and is commonly used by client applications to populate selectors such as dropdowns, filters, and search facets.
+
+---
+
+## Description
+
+The **Fetch Company Logo** API retrieves the logo belonging to the specified company (if one exists).
+
+Key characteristics of this endpoint:
+
+- Publicly accessible (no authentication required)
+- One query parameter, one optional header, and no request body
+- Clear separation between database errors and unexpected server failures
+
+This endpoint serves all the company logos used throughout the application.
+
+---
+
+## Endpoint
+
+```http
+GET /api/companies/logo
+```
+
+-----
+
+### Request
+This endpoint accepts a singular parameter: `company_slug`
+
+#### Parameters
+| Parameters     | Required    | Type     | Description                                             |
+|----------------|-------------|----------|---------------------------------------------------------|
+| `company_slug` | `mandatory` | `string` | The slug of the company whose logo you wish to download |
+
+#### Headers
+This endpoint accepts one parameter.
+
+| Header   | Required | Description                                                                                                 |
+|----------|----------|-------------------------------------------------------------------------------------------------------------|
+| `Accept` | Optional | Defaults to `application/json`, but needs to be `image/png` for the image to not get stuck in DOM rendering |
+
+----
+
+### Response Schema
+
+#### Success - `200 OK`
+
+```json lines
+FileObject
+```
+
+##### Empty Response
+
+If the requested logo is not available, no download happens.
+
+
+------
+
+### Error Codes & Response Types
+
+#### `404 Not Found`
+
+Returned when the requested logo does not exist on the server.
+
+----
+
+#### `500 Internal Server Error`
+
+Returned when an unexpected server-side error occurs.
+
+##### Response Body
+
+```json lines
+{
+    "detail" : "Internal server error"
+}
+```
+
+##### Typical Causes
+1. Unhandled runtime exception
+2. Application-level failure.
