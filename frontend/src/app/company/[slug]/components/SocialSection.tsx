@@ -1,11 +1,11 @@
 "use client"
 
-import { useMemo, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { SGScoreTable } from "./SGScoreTable"
+import {useMemo, useState} from "react"
+import {motion, AnimatePresence} from "framer-motion"
+import {SGScoreTable} from "./SGScoreTable"
 import {normalizeSGScores} from "@/lib/esg/normalizeSocialGovernance";
 
-export function SocialSection({ social }: { social: any[] }) {
+export function SocialSection({social}: { social: any[] }) {
 
     const rows = normalizeSGScores(social)
 
@@ -50,12 +50,12 @@ export function SocialSection({ social }: { social: any[] }) {
             <AnimatePresence mode="wait">
                 <motion.div
                     key={selectedYear}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    initial={{opacity: 0, y: 6}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -6}}
+                    transition={{duration: 0.25, ease: "easeInOut"}}
                 >
-                    <SGScoreTable rows={rowsForYear} />
+                    <SGScoreTable rows={rowsForYear} tooltip_side={"left"}/>
                 </motion.div>
             </AnimatePresence>
         </section>
