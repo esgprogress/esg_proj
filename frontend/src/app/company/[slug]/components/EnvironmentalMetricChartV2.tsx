@@ -1,14 +1,5 @@
 "use client"
 
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    Tooltip,
-    ResponsiveContainer,
-    Legend,
-} from "recharts"
 import {Card, CardContent, CardHeader} from "@/components/ui/card"
 import {AnimatePresence, motion} from "framer-motion"
 import {ClaimedPoint, FuturePoint, Point} from "@/lib/types";

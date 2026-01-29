@@ -1,12 +1,9 @@
 "use client"
 
 import {EnvironmentalQuantitativeSection} from "@/app/company/[slug]/components/EnvironmentalQuantitativeSection";
-import {EnvironmentalQualitativeSection} from "@/app/company/[slug]/components/EnvironmentQualitativeSection";
-import {SocialGovernanceSection} from "@/app/company/[slug]/components/SocialGovernanceSection";
 import React, {useState} from "react";
 import {EnvironmentalQuantitativeSectionV2} from "@/app/company/[slug]/components/EnvironmentalQuantitativeSectionV2";
 import {Button} from "@/components/ui/button";
-import {MessageSquare} from "lucide-react";
 
 type EnvironmentalQuantitativeSectionProps = {
     company: any

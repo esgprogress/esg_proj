@@ -3,7 +3,6 @@
 import {useMemo, useState} from "react"
 import {AnimatePresence, motion} from "framer-motion"
 import {EScoreTable} from "./EScoreTable"
-import {EnvironmentQualitativeData} from "@/lib/types"
 import {normalizeEnvironmentalQualitativeMetric} from "@/lib/esg/normalizeEnvironmental";
 
 export function EnvironmentalQualitativeSection({

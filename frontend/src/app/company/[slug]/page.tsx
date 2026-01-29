@@ -1,15 +1,12 @@
 import {CompanyHeader} from "./components/CompanyHeader"
-import {EnvironmentalQuantitativeSection} from "./components/EnvironmentalQuantitativeSection"
 import {fetchCompanyESG} from "@/lib/data/fetchCompanyESGData"
 import {SocialGovernanceSection} from "@/app/company/[slug]/components/SocialGovernanceSection";
 import {EnvironmentalQualitativeSection} from "@/app/company/[slug]/components/EnvironmentQualitativeSection";
 import TopBar from "@/components/TopBar";
 import React from "react";
 import BottomBar from "@/components/BottomBar";
-import Link from "next/link";
 import ReportProofSection from "@/app/company/[slug]/components/ReportProofSection";
 import {fetchProofData} from "@/lib/data/fetchProofData";
-import {EnvironmentalQuantitativeSectionV2} from "@/app/company/[slug]/components/EnvironmentalQuantitativeSectionV2";
 import EnvironmentalQuantitativeParent from "@/app/company/[slug]/components/EnvironmentalQuantitativeParent";
 
 export default async function CompanyPage({

@@ -1,15 +1,8 @@
 "use client"
 
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {motion} from "framer-motion";
 import {ArrowRight, CheckCircle2, LineChart, Lock, Rocket, Sparkles,} from "lucide-react";
-
-/**
- * Open ESG Tracker — Single-file landing page
- * - Tailwind CSS classes (no import needed)
- * - shadcn/ui components
- * - Framer Motion for tasteful animation
- */
 // shadcn/ui
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
