@@ -1,0 +1,1 @@
+export const CONTACT_FORM_URL = process.env.NEXT_PUBLIC_CONTACT_FORM_URL
