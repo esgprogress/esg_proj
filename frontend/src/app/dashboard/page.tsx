@@ -1,13 +1,16 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import {motion, Variants} from "framer-motion"
 import Link from "next/link"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import {Card, CardContent} from "@/components/ui/card"
+import {Badge} from "@/components/ui/badge"
 import TopBar from "@/components/TopBar"
 import BottomBar from "@/components/BottomBar"
 import {sort} from "d3";
+import CompanyFilterSidebar from "@/app/dashboard/components/CompanyFilterSearchSidebar";
+import {ArrowRight} from "lucide-react";
+import {heroFadeUpVariants} from "@/lib/utils";
 
 export interface CompanySummary {
     name: string
@@ -16,17 +19,11 @@ export interface CompanySummary {
     country: string
 }
 
-const heroFadeUp: Variants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.6 },
-    },
-}
-
 export default function DashboardPage() {
-    const [shuffled, setShuffled] = useState<CompanySummary[]>([])
+    const [companies, setCompanies] = useState<CompanySummary[]>([])
+    const [search, setSearch] = useState("")
+    const [country, setCountry] = useState<string | null>(null)
+    const [industry, setIndustry] = useState<string | null>(null)
 
     useEffect(() => {
         async function load() {
@@ -35,29 +32,45 @@ export default function DashboardPage() {
             )
             const json = await res.json()
             const data = Array.isArray(json) ? json : json.data
-            setShuffled(sort(data))
+            setCompanies(data)
         }
+
         load()
     }, [])
 
-    const grouped = shuffled.reduce<Record<string, CompanySummary[]>>(
-        (acc, c) => {
-            acc[c.industry] ??= []
-            acc[c.industry].push(c)
-            return acc
-        },
-        {}
+    const countries = useMemo(
+        () => Array.from(new Set(companies.map((c) => c.country))),
+        [companies]
     )
+
+    const industries = useMemo(
+        () => Array.from(new Set(companies.map((c) => c.industry))),
+        [companies]
+    )
+
+    const filtered = useMemo(() => {
+        return companies.filter((c) => {
+            if (
+                search &&
+                !c.name.toLowerCase().includes(search.toLowerCase())
+            )
+                return false
+            if (country && c.country !== country) return false
+            return !(industry && c.industry !== industry);
+
+        })
+    }, [companies, search, country, industry])
 
     return (
         <div className="min-h-screen bg-[#f3f6ef] text-black">
-            <TopBar />
+            <TopBar/>
 
             <main className="mx-auto max-w-6xl px-4 py-20 space-y-20">
+
                 {/* Page header */}
                 <header className="max-w-3xl space-y-4">
                     <motion.h1
-                        variants={heroFadeUp}
+                        variants={heroFadeUpVariants}
                         initial="hidden"
                         animate="visible"
                         className="text-5xl font-semibold tracking-tight"
@@ -66,10 +79,10 @@ export default function DashboardPage() {
                     </motion.h1>
 
                     <motion.p
-                        variants={heroFadeUp}
+                        variants={heroFadeUpVariants}
                         initial="hidden"
                         animate="visible"
-                        transition={{ delay: 0.08 }}
+                        transition={{delay: 0.08}}
                         className="text-base text-black/70"
                     >
                         Browse companies by industry and explore detailed ESG
@@ -77,39 +90,39 @@ export default function DashboardPage() {
                     </motion.p>
                 </header>
 
-                {/* Industry sections */}
-                <div className="space-y-20">
-                    {Object.entries(grouped).map(([industry, items]) => (
+                <div className="grid grid-cols-[280px_1fr] gap-6">
+
+                    <CompanyFilterSidebar
+                        search={search}
+                        setSearch={setSearch}
+                        country={country}
+                        setCountry={setCountry}
+                        industry={industry}
+                        setIndustry={setIndustry}
+                        countries={countries}
+                        industries={industries}
+                    />
+
+                    {/* Industry sections */}
+                    <div className="space-y-20">
                         <motion.section
-                            key={industry}
-                            variants={heroFadeUp}
+                            variants={heroFadeUpVariants}
                             initial="hidden"
                             whileInView="visible"
-                            viewport={{ once: true }}
                             className="space-y-4"
                         >
-                            <h2 className="text-xl font-semibold tracking-tight">
-                                {industry}
-                            </h2>
-
-                            <div
-                                className="
-                                    flex gap-4 overflow-x-auto pb-4
-                                    snap-x snap-mandatory
-                                    scrollbar-thin scrollbar-thumb-black/20
-                                "
-                            >
-                                {items.map((company) => (
+                            <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
+                                {filtered.map((company) => (
                                     <motion.div
                                         key={company.slug}
-                                        variants={heroFadeUp}
+                                        variants={heroFadeUpVariants}
                                         className="snap-start shrink-0"
+                                        initial="hidden"
+                                        animate="visible"
                                     >
-                                        <Link
-                                            href={`/company/${company.slug}`}
-                                            className="block"
-                                        >
-                                            <Card className="w-64 rounded-2xl border-black/10 bg-[#eef2e6] shadow-sm hover:shadow-md transition">
+                                        <Link href={`/company/${company.slug}`} className="block">
+                                            <Card
+                                                className="h-full rounded-2xl border-black/10 bg-[#eef2e6] shadow-sm hover:shadow-md transition">
                                                 <CardContent className="p-4 space-y-3">
                                                     <div>
                                                         <h3 className="text-lg font-medium">
@@ -125,8 +138,8 @@ export default function DashboardPage() {
                                                             {company.country}
                                                         </Badge>
                                                         <span className="text-xs text-black/60">
-                                                            View →
-                                                        </span>
+                                        View <ArrowRight className="fill-grey-800"/>
+                                    </span>
                                                     </div>
                                                 </CardContent>
                                             </Card>
@@ -135,11 +148,10 @@ export default function DashboardPage() {
                                 ))}
                             </div>
                         </motion.section>
-                    ))}
+                    </div>
                 </div>
             </main>
-
-            <BottomBar />
+            <BottomBar/>
         </div>
     )
 }
