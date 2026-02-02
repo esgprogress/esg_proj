@@ -1,13 +1,12 @@
 "use client"
 
 import React, {useEffect, useMemo, useState} from "react"
-import {motion, Variants} from "framer-motion"
+import {motion} from "framer-motion"
 import Link from "next/link"
 import {Card, CardContent} from "@/components/ui/card"
 import {Badge} from "@/components/ui/badge"
 import TopBar from "@/components/TopBar"
 import BottomBar from "@/components/BottomBar"
-import {sort} from "d3";
 import CompanyFilterSidebar from "@/app/dashboard/components/CompanyFilterSearchSidebar";
 import {ArrowRight} from "lucide-react";
 import {heroFadeUpVariants} from "@/lib/utils";
@@ -92,16 +91,23 @@ export default function DashboardPage() {
 
                 <div className="grid grid-cols-[280px_1fr] gap-6">
 
-                    <CompanyFilterSidebar
-                        search={search}
-                        setSearch={setSearch}
-                        country={country}
-                        setCountry={setCountry}
-                        industry={industry}
-                        setIndustry={setIndustry}
-                        countries={countries}
-                        industries={industries}
-                    />
+                    <motion.section
+                        variants={heroFadeUpVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        className="space-y-4">
+                        <CompanyFilterSidebar
+                            search={search}
+                            setSearch={setSearch}
+                            country={country}
+                            setCountry={setCountry}
+                            industry={industry}
+                            setIndustry={setIndustry}
+                            countries={countries}
+                            industries={industries}
+                        />
+                    </motion.section>
+
 
                     {/* Industry sections */}
                     <div className="space-y-20">
