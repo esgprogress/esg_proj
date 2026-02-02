@@ -71,12 +71,13 @@ This endpoint accepts a singular parameter: `company_slug`
 |----------------|-------------|----------|---------------------------------------------------------|
 | `company_slug` | `mandatory` | `string` | The slug of the company whose logo you wish to download |
 
-#### Headers
-This endpoint accepts one parameter.
 
-| Header   | Required | Description                                                                                                 |
-|----------|----------|-------------------------------------------------------------------------------------------------------------|
-| `Accept` | Optional | Defaults to `application/json`, but needs to be `image/png` for the image to not get stuck in DOM rendering |
+#### Headers
+This endpoint accepts a singular **optional** header, but changing the value is highly recommended to prevent browser/terminal from hanging.
+
+| Header   | Required   | Description                                                                                                 |
+|----------|------------|-------------------------------------------------------------------------------------------------------------|
+| `Accept` | `optional` | Defaults to `application/json`, but needs to be `image/png` for the image to not get stuck in DOM rendering |
 
 ----
 

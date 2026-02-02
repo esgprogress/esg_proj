@@ -59,11 +59,11 @@ This endpoint accepts **three** parameters: `company_slug`, `file_name`, and `fi
 | `file_type`    | `mandatory` | `string` | File type, in lowercase                        |
 
 #### Headers
-This endpoint **does not** accept any parameters
+This endpoint accepts a singular **optional** header.
 
-| Header   | Required | Description                                                                                                     |
-|----------|----------|-----------------------------------------------------------------------------------------------------------------|
-| `Accept` | Optional | Defaults to `application/json`, but needs to be `application/pdf` for the PDF to not get stuck in DOM rendering |
+| Header   | Required   | Description                                                                                                     |
+|----------|------------|-----------------------------------------------------------------------------------------------------------------|
+| `Accept` | `optional` | Defaults to `application/json`, but needs to be `application/pdf` for the PDF to not get stuck in DOM rendering |
 
 ----
 
