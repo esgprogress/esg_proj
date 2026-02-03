@@ -9,7 +9,8 @@ import TopBar from "@/components/TopBar"
 import BottomBar from "@/components/BottomBar"
 import CompanyFilterSidebar from "@/app/dashboard/components/CompanyFilterSearchSidebar";
 import {ArrowRight} from "lucide-react";
-import {heroFadeUpVariants} from "@/lib/utils";
+import {heroFadeUpVariants, sortCompaniesAsPerSortingFactor} from "@/lib/utils";
+import CompanySortSidebar from "@/app/dashboard/components/CompanySortSidebar";
 
 export interface CompanySummary {
     name: string
@@ -18,11 +19,14 @@ export interface CompanySummary {
     country: string
 }
 
+const companySortingFactors = ["Name: A-Z", "Name: Z-A", "Country: A-Z", "Country: Z-A", "Industry: A-Z", "Industry: Z-A"]
+
 export default function DashboardPage() {
     const [companies, setCompanies] = useState<CompanySummary[]>([])
     const [search, setSearch] = useState("")
     const [country, setCountry] = useState<string | null>(null)
     const [industry, setIndustry] = useState<string | null>(null)
+    const [sorting, setSorting] = useState<string>(companySortingFactors[0])
 
     useEffect(() => {
         async function load() {
@@ -58,7 +62,11 @@ export default function DashboardPage() {
             return !(industry && c.industry !== industry);
 
         })
-    }, [companies, search, country, industry])
+    }, [companies, search, country, industry, sorting])
+
+    const sortedAndFiltered = useMemo(() => {
+        return sortCompaniesAsPerSortingFactor(sorting, filtered)
+    }, [companies, search, country, industry, sorting])
 
     return (
         <div className="min-h-screen bg-[#f3f6ef] text-black">
@@ -89,13 +97,14 @@ export default function DashboardPage() {
                     </motion.p>
                 </header>
 
-                <div className="grid grid-cols-[280px_1fr] gap-6">
+                <div className="grid grid-cols-[280px_1fr] gap-6 overflow-visible">
 
                     <motion.section
                         variants={heroFadeUpVariants}
                         initial="hidden"
                         whileInView="visible"
                         className="space-y-4">
+
                         <CompanyFilterSidebar
                             search={search}
                             setSearch={setSearch}
@@ -106,6 +115,8 @@ export default function DashboardPage() {
                             countries={countries}
                             industries={industries}
                         />
+
+                        <CompanySortSidebar currentSortBy={sorting} setCurrentSortBy={setSorting} sortingFactors={companySortingFactors}/>
                     </motion.section>
 
 
@@ -118,7 +129,7 @@ export default function DashboardPage() {
                             className="space-y-4"
                         >
                             <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(220px,1fr))]">
-                                {filtered.map((company) => (
+                                {sortedAndFiltered.map((company) => (
                                     <motion.div
                                         key={company.slug}
                                         variants={heroFadeUpVariants}

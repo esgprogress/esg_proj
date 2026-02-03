@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import {UploadCloud} from "lucide-react";
 import {Company} from "@/lib/types";
-import CompanySelect from "@/app/admin/components/CompanySelectDropdown";
+import AnimatedSingleSelectDropdown from "@/components/AnimatedSingleSelectDropdown";
 
 type Props = {
     companies: Company[];
@@ -155,8 +155,8 @@ export default function CompanyLogoWidget({companies}: Props) {
                 </div>
 
                 <div className="mt-3 flex items-center justify-center">
-                    <CompanySelect companies={companies.map((item) => item.name).sort()} value={company.name}
-                                   onChange={handleCompanyNameChange}/>
+                    <AnimatedSingleSelectDropdown listOfValues={companies.map((item) => item.name).sort()} value={company.name}
+                                                  onChange={handleCompanyNameChange}/>
                 </div>
 
                 {error && (

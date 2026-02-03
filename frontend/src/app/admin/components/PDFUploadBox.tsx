@@ -2,7 +2,7 @@
 
 import { FileText, LogIn, UploadCloud } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import CompanySelectDropdown from "@/app/admin/components/CompanySelectDropdown";
+import AnimatedSingleSelectDropdown from "@/components/AnimatedSingleSelectDropdown";
 import React, { useState } from "react";
 
 export default function PDFUploadBox({ companies }: { companies: string[] }) {
@@ -160,8 +160,8 @@ export default function PDFUploadBox({ companies }: { companies: string[] }) {
                         </p>
 
                         <div className="mt-3 flex items-center justify-center">
-                            <CompanySelectDropdown
-                                companies={companies}
+                            <AnimatedSingleSelectDropdown
+                                listOfValues={companies}
                                 value={fileName}
                                 onChange={handleFileNameChange}
                             />

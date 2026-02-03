@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 
-export default function CompanySelect({
-                                          companies,
-                                          value,
-                                          onChange,
-                                      }: {
-    companies: string[];
+export default function AnimatedSingleSelectDropdown({
+                                                         listOfValues,
+                                                         value,
+                                                         onChange,
+                                                     }: {
+    listOfValues: string[];
     value: string;
     onChange: (v: string) => void;
 }) {
@@ -61,7 +61,7 @@ export default function CompanySelect({
                 }`}
             >
                 <div className="max-h-40 overflow-y-auto">
-                    {companies.map((item) => (
+                    {listOfValues.map((item) => (
                         <button
                             key={item}
                             onClick={() => {

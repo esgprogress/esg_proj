@@ -1,6 +1,7 @@
 import {clsx, type ClassValue} from "clsx"
 import {twMerge} from "tailwind-merge"
 import {Variants} from "framer-motion";
+import {Company} from "@/lib/types";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -47,4 +48,26 @@ export function getInitials(name: string) {
 export function stringToGradient(name: string) {
     const h = Math.abs(name.split("").reduce((a,c)=>a+c.charCodeAt(0),0)) % 360
     return `linear-gradient(135deg, hsl(${h},70%,55%), hsl(${(h+40)%360},70%,60%))`
+}
+
+export function sortCompaniesAsPerSortingFactor(sortingFactor: string, companies: Company[]) {
+    if (sortingFactor === "Name: A-Z") {
+        return companies.sort((a, b) => a.name.localeCompare(b.name));
+    }
+    else if (sortingFactor === "Name: Z-A") {
+        return companies.sort((a, b) => b.name.localeCompare(a.name));
+    }
+    else if (sortingFactor === "Country: A-Z") {
+        return companies.sort((a, b) => a.country.localeCompare(b.country));
+    }
+    else if (sortingFactor === "Country: Z-A") {
+        return companies.sort((a, b) => b.country.localeCompare(a.country));
+    }
+    else if (sortingFactor === "Industry: A-Z") {
+        return companies.sort((a, b) => a.industry.localeCompare(b.industry));
+    }
+    else if (sortingFactor === "Industry: Z-A") {
+        return companies.sort((a, b) => b.industry.localeCompare(a.industry));
+    }
+    else return companies;
 }
