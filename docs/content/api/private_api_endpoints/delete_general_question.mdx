@@ -1,0 +1,115 @@
+
+# Delete General Question
+
+---
+
+<span className="inline-flex items-center gap-2">
+  <span
+      className="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
+    DELETE
+  </span>
+  <span className="text-sm font-mono text-gray-600 dark:text-gray-400">
+    /api/generalQuestion
+  </span>
+</span>
+
+
+----
+
+## Summary
+
+Deletes an existing question from the set of questions that are answered for a given industry.
+
+---
+
+## Description
+
+The **Delete General Question** API deletes an existing question from the set of questions that are answered for a given industry in the database.
+
+Key characteristics of this endpoint:
+
+- Private access only.
+- Three query parameters, no request body
+- Clear separation between database errors and unexpected server failures
+
+---
+
+## Endpoint
+
+```http
+DELETE /api/generalQuestion
+```
+
+-----
+
+### Request
+This endpoint accepts three parameters.
+
+
+#### Parameters
+| Parameters    | Required    | Type      | Description                                                                         |
+|---------------|-------------|-----------|-------------------------------------------------------------------------------------|
+| `type`        | `mandatory` | `string`  | Whether the question belongs to `social` or `governance` sections                   |
+| `question`    | `mandatory` | `string`  | The question itself. Note that all special characters must be appropriately encoded |
+| `qualitative` | `mandatory` | `boolean` | Whether the question is of type qualitative or not                                  |
+
+#### Headers
+This endpoint accepts a singular **optional** header.
+
+| Header   | Required   | Description                    |
+|----------|------------|--------------------------------|
+| `Accept` | `optional` | Defaults to `application/json` |
+
+----
+
+### Response Schema
+
+#### Success - `200 OK`
+
+##### Example Response
+
+```json lines
+[]
+```
+
+### Error Codes & Response Types
+
+#### ```503 Service Unavailable```
+Returned when the database is temporarily unavailable, a query fails due to a database issue, or Gemini is overloaded.
+
+##### Response Body
+
+``` json lines
+{
+    "detail" : "Database temporarily unavailable"
+}
+```
+
+##### Typical Causes
+1. MongoDB Connection Issues
+2. Database timeout or query failure for a non-general reason
+
+------
+
+#### `500 Internal Server Error`
+
+Returned when an unexpected server-side error occurs.
+
+##### Response Body
+
+```json lines
+{
+    "detail" : "Internal server error"
+}
+```
+
+##### Typical Causes
+1. Unhandled runtime exception
+2. Application-level failure outside database operations.
+
+-----
+
+### Implementation Notes
+1. Logs both database-specific and unexpected errors for observability
+2. Treats empty datasets as a valid state, not an error condition
+
