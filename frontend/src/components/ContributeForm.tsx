@@ -62,6 +62,7 @@ export function ContributeForm() {
                     <option value="data-issue">Data issue</option>
                     <option value="research">Research collaboration</option>
                     <option value="general">General enquiry</option>
+                    <option value="translation">Translation (Please mention the intended language of translation)</option>
                 </select>
             </div>
 
