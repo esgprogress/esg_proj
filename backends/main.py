@@ -153,7 +153,7 @@ async def fetchQuestions(industry: str):
         )
 
 
-@web_server.put("/api/addQuestionSpecific", summary="Add new question to env list of industry",
+@web_server.put("/api/specificQuestion", summary="Add new question to env list of industry",
                 description="Given a particular industry, add a new question to the list of industry-specific questions that will be asked")
 async def addQuestionSpecific(industry: str, question: str, qualitative: bool,
                               claims: dict = Depends(auth0.require_auth)):
@@ -180,7 +180,7 @@ async def addQuestionSpecific(industry: str, question: str, qualitative: bool,
         )
 
 
-@web_server.put("/api/addCategory", summary="Add new industry category",
+@web_server.put("/api/category", summary="Add new industry category",
                 description="Add a new industry category to the list of industries")
 async def addCategory(industry: str, claims: dict = Depends(auth0.require_auth)):
     try:
@@ -203,7 +203,7 @@ async def addCategory(industry: str, claims: dict = Depends(auth0.require_auth))
         )
 
 
-@web_server.put("/api/addQuestionGeneral", summary="Add new generic question",
+@web_server.put("/api/generalQuestion", summary="Add new generic question",
                 description="Add a new generic question to the list of questions that every company is subjected to")
 async def addQuestionGeneral(type: str, question: str, qualitative: bool = False,
                              claims: dict = Depends(auth0.require_auth)):
@@ -235,7 +235,7 @@ async def addQuestionGeneral(type: str, question: str, qualitative: bool = False
         )
 
 
-@web_server.delete("/api/removeCategory", summary="Remove a category from the list",
+@web_server.delete("/api/category", summary="Remove a category from the list",
                    description="Remove a category from the list")
 async def removeCategory(industry: str, claims: dict = Depends(auth0.require_auth)):
     try:
@@ -258,7 +258,7 @@ async def removeCategory(industry: str, claims: dict = Depends(auth0.require_aut
         )
 
 
-@web_server.delete("/api/removeQuestionGeneral", summary="Remove general question",
+@web_server.delete("/api/generalQuestion", summary="Remove general question",
                    description="Remove general question from the list")
 async def removeQuestionGeneral(type: str, question: str, qualitative: bool = False,
                                 claims: dict = Depends(auth0.require_auth)):
@@ -290,7 +290,7 @@ async def removeQuestionGeneral(type: str, question: str, qualitative: bool = Fa
         )
 
 
-@web_server.delete("/api/removeQuestionSpecific", summary="Remove specific question",
+@web_server.delete("/api/specificQuestion", summary="Remove specific question",
                    description="Remove industry-specific question from the list")
 async def removeQuestionSpecific(industry: str, question: str, qualitative: bool,
                                  claims: dict = Depends(auth0.require_auth)):
