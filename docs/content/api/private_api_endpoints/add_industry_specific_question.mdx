@@ -1,15 +1,15 @@
 
-# Upload Company Logo
+# Add Industry-Specific Question
 
 ---
 
 <span className="inline-flex items-center gap-2">
   <span
-      className="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">
-    POST
+      className="px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300">
+    PUT
   </span>
   <span className="text-sm font-mono text-gray-600 dark:text-gray-400">
-    /api/companies/logo
+    /api/specificQuestion
   </span>
 </span>
 
@@ -18,37 +18,40 @@
 
 ## Summary
 
-Uploads a company logo given its unique slug, into the server's file system.
+Adds a new question into the set of questions that are answered for a given industry.
 
 ---
 
 ## Description
 
-The **Upload Company Logo** API adds a company report into the database.
+The **Add Industry-Specific Question** API adds a new question into the set of questions that are answered for a given industry in the database.
 
 Key characteristics of this endpoint:
 
 - Private access only.
-- One query parameter, MultiForm Part request body
+- Three query parameters, no request body
+- Clear separation between database errors and unexpected server failures
 
 ---
 
 ## Endpoint
 
 ```http
-POST /api/companies/logo
+PUT /api/specificQuestion
 ```
 
 -----
 
 ### Request
-This endpoint accepts one parameter.
+This endpoint accepts three parameters.
 
 
 #### Parameters
-| Parameters     | Required    | Type     | Description                                                                                                                          |
-|----------------|-------------|----------|--------------------------------------------------------------------------------------------------------------------------------------|
-| `company_slug` | `mandatory` | `string` | The unique slug of the company whose logo you wish to update (or introduce). You can obtain this from the `Fetch Companies` endpoint |
+| Parameters    | Required    | Type      | Description                                                                         |
+|---------------|-------------|-----------|-------------------------------------------------------------------------------------|
+| `industry`    | `mandatory` | `string`  | The industry to which the question should be added for future data addition         |
+| `question`    | `mandatory` | `string`  | The question itself. Note that all special characters must be appropriately encoded |
+| `qualitative` | `mandatory` | `boolean` | Whether the question is of type qualitative or not                                  |
 
 #### Headers
 This endpoint accepts a singular **optional** header.
