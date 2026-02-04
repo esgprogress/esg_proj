@@ -68,6 +68,11 @@ export default function CompanyLogoWidget({companies}: Props) {
             setIsLoading(true);
             setError(null);
 
+            const json = await fetch("/api/auth");
+            if (!json.ok) throw new Error(await json.text());
+
+            const { accessToken } = await json.json();
+
             const formData = new FormData();
             formData.append("file", file);
 
@@ -76,6 +81,9 @@ export default function CompanyLogoWidget({companies}: Props) {
                 {
                     method: "POST",
                     body: formData,
+                    headers: {
+                        Authorization: `Bearer ${accessToken.token}`,
+                    }
                 }
             );
 
