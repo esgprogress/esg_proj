@@ -1,45 +1,64 @@
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt
-from fastapi_plugin.fast_api_client import Auth0FastAPI
-import requests
 from dotenv import load_dotenv
+import requests
 import os
 
+ALGORITHMS = ["RS256"]
+security = HTTPBearer()
 load_dotenv(verbose=True)
 
-ALGORITHMS = ["RS256"]
-
-security = HTTPBearer()
+AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
+API_AUDIENCE = os.getenv("API_AUDIENCE")
+ISSUER = f"https://{AUTH0_DOMAIN}/"
 
 jwks = requests.get(
-    f"https://{os.getenv('AUTH0_DOMAIN')}/.well-known/jwks.json"
+    f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
 ).json()
+
+def get_rsa_key(token):
+    header = jwt.get_unverified_header(token)
+
+    for key in jwks["keys"]:
+        if key["kid"] == header["kid"]:
+            return key
+
+    # refresh keys
+    new_jwks = requests.get(
+        f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
+    ).json()
+    jwks["keys"] = new_jwks["keys"]
+
+    for key in jwks["keys"]:
+        if key["kid"] == header["kid"]:
+            return key
+
+    return None
 
 def verify_token(token: str):
     try:
-        header = jwt.get_unverified_header(token)
-        # key = next(k for k in jwks["keys"] if k["kid"] == header["kid"])
-        key = jwks["keys"][0]["kid"]
+        rsa_key = get_rsa_key(token)
+        if not rsa_key:
+            raise HTTPException(status_code=401, detail="Invalid key ID")
 
-        print(key)
         payload = jwt.decode(
             token,
-            key,
-            algorithms=["RS256", "HS256", "ES256"],
-            audience=os.getenv('API_AUDIENCE'),
-            issuer=f"https://{os.getenv('AUTH0_DOMAIN')}/",
+            rsa_key,
+            algorithms=ALGORITHMS,
+            audience=API_AUDIENCE,
+            issuer=ISSUER,
         )
-        # print(payload)
         return payload
+
     except Exception as e:
-        print(e)
-        raise HTTPException(status_code=401, detail="Invalid token")
+        print("JWT ERROR:", e)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token"
+        )
 
-def get_user(credentials: HTTPAuthorizationCredentials =Depends(security)):
+def get_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
     return verify_token(credentials.credentials)
-
-auth0 = Auth0FastAPI(
-   domain=os.getenv("AUTH0_DOMAIN"),
-   audience=os.getenv("API_AUDIENCE")
-)

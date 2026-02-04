@@ -9,7 +9,7 @@ from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import FileResponse
 
-from backends.auth.auth0_auth import auth0
+from backends.auth.auth0_auth import get_user
 from backends.constants.mongo_client import data_collection, industries_collection, questions_collection, database
 import json
 from backends.data_handling.insert_schema_into_mongo import insert_json_into_mongo
@@ -156,7 +156,7 @@ async def fetchQuestions(industry: str):
 @web_server.put("/api/specificQuestion", summary="Add new question to env list of industry",
                 description="Given a particular industry, add a new question to the list of industry-specific questions that will be asked")
 async def addQuestionSpecific(industry: str, question: str, qualitative: bool,
-                              claims: dict = Depends(auth0.require_auth)):
+                              claims: dict = Depends(get_user)):
     try:
         if qualitative:
             questions_collection.update_one({"industry": industry}, {"$push": {"qualitative": question}}, upsert=True)
@@ -182,7 +182,7 @@ async def addQuestionSpecific(industry: str, question: str, qualitative: bool,
 
 @web_server.put("/api/category", summary="Add new industry category",
                 description="Add a new industry category to the list of industries")
-async def addCategory(industry: str, claims: dict = Depends(auth0.require_auth)):
+async def addCategory(industry: str, claims: dict = Depends(get_user)):
     try:
         industries_collection.update_one({}, {"$push": {"industries": industry}}, upsert=True)
 
@@ -206,7 +206,7 @@ async def addCategory(industry: str, claims: dict = Depends(auth0.require_auth))
 @web_server.put("/api/generalQuestion", summary="Add new generic question",
                 description="Add a new generic question to the list of questions that every company is subjected to")
 async def addQuestionGeneral(type: str, question: str, qualitative: bool = False,
-                             claims: dict = Depends(auth0.require_auth)):
+                             claims: dict = Depends(get_user)):
     try:
         if type == "social" or type == "governance":
             questions_collection.update_one({"industry": "general"}, {"$push": {type: question}}, upsert=True)
@@ -237,7 +237,7 @@ async def addQuestionGeneral(type: str, question: str, qualitative: bool = False
 
 @web_server.delete("/api/category", summary="Remove a category from the list",
                    description="Remove a category from the list")
-async def removeCategory(industry: str, claims: dict = Depends(auth0.require_auth)):
+async def removeCategory(industry: str, claims: dict = Depends(get_user)):
     try:
         industries_collection.delete_one({}, {"$pull": {"industries": industry}}, upsert=True)
 
@@ -261,7 +261,7 @@ async def removeCategory(industry: str, claims: dict = Depends(auth0.require_aut
 @web_server.delete("/api/generalQuestion", summary="Remove general question",
                    description="Remove general question from the list")
 async def removeQuestionGeneral(type: str, question: str, qualitative: bool = False,
-                                claims: dict = Depends(auth0.require_auth)):
+                                claims: dict = Depends(get_user)):
     try:
         if type == "social" or type == "governance":
             questions_collection.delete_one({"industry": "general"}, {"$pull": {type: question}}, upsert=True)
@@ -293,7 +293,7 @@ async def removeQuestionGeneral(type: str, question: str, qualitative: bool = Fa
 @web_server.delete("/api/specificQuestion", summary="Remove specific question",
                    description="Remove industry-specific question from the list")
 async def removeQuestionSpecific(industry: str, question: str, qualitative: bool,
-                                 claims: dict = Depends(auth0.require_auth)):
+                                 claims: dict = Depends(get_user)):
     try:
         if qualitative:
             questions_collection.delete_one({"industry": industry}, {"$pull": {"qualitative": question}}, upsert=True)
@@ -377,7 +377,7 @@ async def fetchCompany(company_slug: str):
 
 @web_server.post("/api/companies/addData", summary="Upload new report",
                  description="Upload new report and autofill details into database")
-async def add_data(company_name: str, file: UploadFile = File(...), claims: dict = Depends(auth0.require_auth)):
+async def add_data(company_name: str, file: UploadFile = File(...), claims: dict = Depends(get_user)):
     logger.warning("add_data CALLED")
 
     file_path = UPLOAD_DIR / file.filename
@@ -554,7 +554,7 @@ async def getCompanyLogo(company_slug: str):
 @web_server.post('/api/companies/logo', summary="Upload or change company logo",
                  description="Upload or change company logo")
 async def uploadCompanyLogo(company_slug: str, file: UploadFile = File(...),
-                            claims: dict = Depends(auth0.require_auth)):
+                            claims: dict = Depends(get_user)):
     try:
         # step 1: find company name
         company_name_result = data_collection.find({"slug": company_slug},
