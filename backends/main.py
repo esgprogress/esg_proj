@@ -602,3 +602,7 @@ async def uploadCompanyLogo(company_slug: str, file: UploadFile = File(...),
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Internal server error"
         )
+
+@web_server.get('/', summary="Welcome", description="Welcome")
+async def welcome():
+    return "Welcome to the ESGProgress API!"
