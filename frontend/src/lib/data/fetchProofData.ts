@@ -2,7 +2,7 @@ export async function fetchProofData(slug: string) {
     try {
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/proof/fetchData?company_slug=${slug}`,
-            { cache: "no-store" } // important for dashboards
+            { cache: "no-store" } // no caching
         )
 
         if (!res.ok) {

@@ -1,4 +1,5 @@
 "use client"
+
 import {useState} from "react"
 import {getInitials, stringToColor, stringToGradient} from "@/lib/utils";
 
