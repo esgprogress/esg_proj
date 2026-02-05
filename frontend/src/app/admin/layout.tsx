@@ -1,9 +1,9 @@
-import React from "react";
 import type {Metadata} from "next";
+import React from "react";
 
 export const metadata: Metadata = {
-    title: 'Legal Disclaimer',
-    description: 'ESGProgress Legal Disclaimer',
+    title: 'Admin - ESGProgress',
+    description: 'ESGProgress Admin Page',
     icons: [
         {
             url: '/esgProgressLogo.svg',
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     ]
 };
 
-export default function LegalLayout({
+export default function AdminLayout({
                                         children,
                                     }: {
     children: React.ReactNode;
@@ -22,4 +22,4 @@ export default function LegalLayout({
             {children}
         </div>
     );
-}
+};
