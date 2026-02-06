@@ -29,7 +29,7 @@ export function ContributeForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="mt-10 grid gap-6 "
+            className="mt-10 grid gap-6 w-full max-w-md mx-auto"
         >
             <div className="grid gap-2">
                 <label className="text-sm font-semibold">Name</label>
@@ -62,7 +62,8 @@ export function ContributeForm() {
                     <option value="data-issue">Data issue</option>
                     <option value="research">Research collaboration</option>
                     <option value="general">General enquiry</option>
-                    <option value="translation">Translation (Please mention the intended language of translation)</option>
+                    <option value="translation">Translation (Please mention the intended language of translation)
+                    </option>
                 </select>
             </div>
 
@@ -85,7 +86,7 @@ export function ContributeForm() {
             >
                 {status === "idle" && "Send message"}
                 {status === "sending" && "Sending…"}
-                {status === "success" && "✓ Message sent"}
+                {status === "success" && "Message sent"}
             </Button>
         </form>
     );

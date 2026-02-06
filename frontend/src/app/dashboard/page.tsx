@@ -97,7 +97,7 @@ export default function DashboardPage() {
                     </motion.p>
                 </header>
 
-                <div className="grid grid-cols-[280px_1fr] gap-6 overflow-visible">
+                <div className="grid lg:grid-cols-[280px_1fr] gap-6 overflow-visible">
 
                     <motion.section
                         variants={heroFadeUpVariants}

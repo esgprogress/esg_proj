@@ -85,7 +85,7 @@ export default function ContributePage() {
                                 </h4>
                             </motion.div>
 
-                            <motion.div {...heroFadeUp(0.48)}>
+                            <motion.div {...heroFadeUp(0.48)} className="px-4">
                                 <ContributeForm />
                             </motion.div>
                         </CardContent>
