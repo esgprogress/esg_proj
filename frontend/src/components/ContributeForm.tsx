@@ -1,10 +1,19 @@
-"use client";
+"use client"
 
-import {useState} from "react";
-import {Button} from "@/components/ui/button";
+import React, {useState} from "react"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Textarea} from "@/components/ui/textarea"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 export function ContributeForm() {
-    const [status, setStatus] = useState<"idle" | "sending" | "success">("idle");
+    const [status, setStatus] = useState<"idle" | "sending" | "success">("idle")
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -29,65 +38,50 @@ export function ContributeForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="mt-10 grid gap-6 w-full max-w-md mx-auto"
+            className="mt-10 grid gap-6 w-full min-w-0"
         >
             <div className="grid gap-2">
                 <label className="text-sm font-semibold">Name</label>
-                <input
-                    name="name"
-                    required
-                    className="rounded-xl border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black bg-input"
-                />
+                <Input name="name" required/>
             </div>
 
             <div className="grid gap-2">
                 <label className="text-sm font-semibold">Email</label>
-                <input
-                    name="email"
-                    type="email"
-                    required
-                    className="rounded-xl border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black bg-input"
-                />
+                <Input name="email" type="email" required/>
             </div>
 
             <div className="grid gap-2">
                 <label className="text-sm font-semibold">Query type</label>
-                <select
-                    name="type"
-                    required
-                    className="rounded-xl border px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-black bg-input"
-                >
-                    <option value="">Select one</option>
-                    <option value="contribution">Contribution</option>
-                    <option value="data-issue">Data issue</option>
-                    <option value="research">Research collaboration</option>
-                    <option value="general">General enquiry</option>
-                    <option value="translation">Translation (Please mention the intended language of translation)
-                    </option>
-                </select>
+                <Select name="type" required>
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select one"/>
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="contribution">Contribution</SelectItem>
+                        <SelectItem value="data-issue">Data issue</SelectItem>
+                        <SelectItem value="research">Research collaboration</SelectItem>
+                        <SelectItem value="general">General enquiry</SelectItem>
+                        <SelectItem value="translation">
+                            Translation (Please mention the intended language)
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
 
             <div className="grid gap-2">
                 <label className="text-sm font-semibold">Message</label>
-                <textarea
-                    name="message"
-                    rows={6}
-                    required
-                    className="rounded-xl border px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-black bg-input"
-                />
+                <Textarea name="message" rows={6} required/>
             </div>
 
             <Button
                 type="submit"
                 disabled={status !== "idle"}
-                className={`mt-2 rounded-2xl px-6 py-5 text-sm font-semibold transition-all bg-white
-          ${status === "success" ? "bg-green-600 hover:bg-green-600" : ""}
-        `}
+                className="mt-2 rounded-2xl px-6 py-5 text-sm font-semibold"
             >
                 {status === "idle" && "Send message"}
                 {status === "sending" && "Sending…"}
                 {status === "success" && "Message sent"}
             </Button>
         </form>
-    );
+    )
 }

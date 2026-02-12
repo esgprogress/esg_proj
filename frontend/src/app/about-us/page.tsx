@@ -58,9 +58,9 @@ export default function AboutPage() {
                 </motion.h3>
 
                 {/* Team Section */}
-                <div className="grid gap-10 md:grid-cols-3 items-start">
+                <div className="grid gap-10 md:grid-cols-2 items-start">
                     {/* Big Feature Member */}
-                    <motion.div {...heroFadeUp(0.28)} className="md:col-span-2">
+                    <motion.div {...heroFadeUp(0.28)}>
                         <Card className="rounded-3xl bg-[#eef2e6] border-[#c6d1b3] shadow-sm overflow-hidden">
                             <div className="relative h-80 w-full bg-black/5 overflow-hidden">
                                 <Image
@@ -92,7 +92,7 @@ export default function AboutPage() {
                     {/* Secondary Member */}
                     <motion.div {...heroFadeUp(0.34)}>
                         <Card className="rounded-3xl bg-[#eef2e6] border-[#c6d1b3] shadow-sm overflow-hidden">
-                            <div className="relative h-48 w-full bg-black/5 overflow-hidden">
+                            <div className="relative h-80 w-full bg-black/5 overflow-hidden">
                                 <Image
                                     src={arjunSanghiPhoto}
                                     alt="A photograph of the project's main programmer, Arjun Sanghi"

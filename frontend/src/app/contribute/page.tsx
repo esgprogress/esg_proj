@@ -13,7 +13,7 @@ export default function ContributePage() {
         <div className="min-h-screen bg-[#f3f6ef] text-black">
             <TopBar />
 
-            <section className="mx-auto max-w-6xl px-4 py-14 text-slate-600">
+            <section className="mx-auto max-w-6xl px-4 py-14 text-slate-600 overflow-x-hidden">
                 {/* Page title */}
                 <motion.div {...heroFadeUp(0)}>
                     <h1 className="text-5xl font-semibold text-black mb-8">
@@ -85,7 +85,7 @@ export default function ContributePage() {
                                 </h4>
                             </motion.div>
 
-                            <motion.div {...heroFadeUp(0.48)} className="px-4">
+                            <motion.div {...heroFadeUp(0.48)}>
                                 <ContributeForm />
                             </motion.div>
                         </CardContent>
