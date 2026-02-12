@@ -387,8 +387,7 @@ async def add_data(company_name: str, file: UploadFile = File(...), claims: dict
 
     # The file has been saved to a directory. Now, start the pipeline
     try:
-        pdf_to_context(file_path, "./out", 12000)
-        data = extract_data("./out/llm_context.txt")
+        data = extract_data(file_path)
         dict_json = json.loads(data.json())
         insert_json_into_mongo(dict_json, company_name)
 
