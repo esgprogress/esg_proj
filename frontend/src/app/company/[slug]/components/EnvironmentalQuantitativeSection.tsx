@@ -1,17 +1,37 @@
 "use client"
 
-import { EnvironmentalMetricChart } from "./EnvironmentalMetricChart"
-import { normalizeEnvironmentalQuantitativeMetric } from "@/lib/esg/normalizeEnvironmental"
+import {useMemo, useState} from "react"
+import {motion, AnimatePresence} from "framer-motion"
+import {EnvironmentalMetricChart} from "./EnvironmentalMetricChart"
+import {normalizeEnvironmentalQuantitativeMetric} from "@/lib/esg/normalizeEnvironmental"
+import AnimatedSingleSelectDropdown from "@/components/AnimatedSingleSelectDropdown"
 
 export function EnvironmentalQuantitativeSection({
-                                         environmental,
-                                     }: {
+                                                     environmental,
+                                                 }: {
     environmental: {
         quantitative: any[]
         qualitative: any[]
     }
 }) {
     if (!Array.isArray(environmental?.quantitative)) return null
+
+    const normalized = useMemo(() => {
+        return environmental.quantitative
+            .map((metric) => {
+                const series = normalizeEnvironmentalQuantitativeMetric(
+                    metric.criterion,
+                    metric
+                )
+                return series.data.length > 0 ? series : null
+            })
+            .filter(Boolean)
+    }, [environmental.quantitative])
+
+    if (normalized.length === 0) return null
+
+    const [selected, setSelected] = useState(normalized[0].name)
+    const current = normalized.find((x) => x.name === selected)!
 
     return (
         <section className="space-y-6">
@@ -22,26 +42,34 @@ export function EnvironmentalQuantitativeSection({
                 </p>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {environmental.quantitative.map((metric) => {
-                    const series = normalizeEnvironmentalQuantitativeMetric(
-                        metric.criterion,
-                        metric
-                    )
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={current.name}
+                    initial={{opacity: 0, y: 12}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -12}}
+                    transition={{duration: 0.25}}
+                >
+                    <EnvironmentalMetricChart
+                        title={current.name}
+                        unit={current.unit}
+                        data={current.data}
+                    >
+                    </EnvironmentalMetricChart>
 
-                    if (series.data.length === 0) return null
+                </motion.div>
+            </AnimatePresence>
 
-                    return (
-                        <EnvironmentalMetricChart
-                            key={metric.criterion}
-                            title={series.name}
-                            unit={series.unit}
-                            data={series.data}
-                        />
-                    )
-                })}
+            {/* Selector*/}
+            <div className="mt-6 flex justify-center">
+                <div className="w-full max-w-xl flex justify-center">
+                    <AnimatedSingleSelectDropdown
+                        listOfValues={normalized.map((x) => x.name)}
+                        value={selected}
+                        onChange={setSelected}
+                    />
+                </div>
             </div>
-
         </section>
     )
 }
