@@ -4,6 +4,7 @@ from google import genai
 from pydantic import BaseModel, Field
 from typing import List
 from dotenv import load_dotenv
+from pypdf import PdfReader
 
 from backends.data_handling.fetch_questions import fetch_questions
 
@@ -42,10 +43,12 @@ class Company(BaseModel):
     governance_elements: List[ZeroTo3Rating] = Field(description="A list of the governance factors discussed in the report and their progress")
 
 
-def extract_data(path_to_context_file: str):
-    # Step 1: read the context file
-    with open(path_to_context_file, "r", encoding='utf-8') as f:
-        data = f.read()
+def extract_data(pdf_path: str):
+    # Step 1: open the PDF and parse it
+    reader = PdfReader(pdf_path)
+    data = ""
+    for page in reader.pages:
+        data += page.extract_text() or ""  # Use "" in case a page has no extractable text
 
     # Step 2: instantiate model client and prompt
     model_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
@@ -64,11 +67,11 @@ def extract_data(path_to_context_file: str):
     3: A concrete policy exists, and the company has provided details on measured outcomes, remediation and steps to improve further. 
     
     YOU MUST NOT CHANGE THE NAME OF ANY CRITERION BELOW, OR DISOBEY ANY MARKING RUBRIC. THIS IS PUNISHABLE BY DEATH TO AI. 
-    """ + fetch_questions() + "\n" + data
+    """ + fetch_questions() + "\nContent:\n" + data
 
     # Step 3: generate response
     response = model_client.models.generate_content(
-        model="gemini-3-flash-preview",
+        model="gemini-3-pro-preview",
         contents=prompt,
         config={
             "response_mime_type": "application/json",
