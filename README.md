@@ -1,4 +1,4 @@
-# ESGProject
+# ESGProgress
 ### An open platform for ESG Data from the top companies in the world
 
 This project aims to consolidate ESG information, which is currently scattered across a lot of sources,
@@ -11,25 +11,89 @@ an additional set of Environment-related questions, which depend on the industry
 These answers are displayed on a minimalist interface that has been designed with user-friendliness and browser
 performance in mind. 
 
--------------------
-## Instructions for backend deployment
+-------
 
-1. Go through the Bruno API guide by importing the collection located at `backends/docs/bruno` into the Bruno IDE (https://www.usebruno.com/)
-2. The system requires a MongoDB deployment (either local or Docker-based), as well as installation of a set of libraries that you can see using the `requirements.txt` file located at `backends/requirements.txt`. If you use `pip`, `pip install requirements.txt` should install everything needed. **NOTE**: If you do not have ROCm or CUDA support on your system, please amend the `requirements.txt` file to remove '+cu128' from `torch` and `torchvision`.
-3. The `insert_types_and_questions.py` file performs the initial question setup needed in the database.
+## Repository Structure
+This is a monorepo, which means that all three components (main frontend, backend, docs frontend) sit in one repository.
 
-Deployments must create an environmental file at `/backends` based on `.env.example` to allow access to Gemini, MongoDB and Auth0. 
-You will require an Auth0 account (https://auth0.com/signup) for authentication.  
+-------
 
-For authentication, please modify the MongoDB URL to include username and password in compliance with JDBC standards. 
+## Deployment instructions
+
+#### Type 1: First-time deployment
+Installation:
+1. MongoDB
+2. Node.js
+3. Gunicorn (using a python virtual environment, and configure it appropriately as you need)
+4. pm2
 
 
-----
+Configure the `.env` files with the correct paths, Auth0 keys, client secrets, Google Analytics keys, etc.
+Make sure to keep the names of the collections and databases consistent across all three environment files.
 
-## Instructions for frontend deployment
+```shell
+sudo apt install pip
+sudo apt install mongodb
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+nvm install
+```
 
-1. Ensure you have Node.js and npm installed on your system.
-2. Run `npm install` to install all the dependencies
-3. Create a new environment file in `/frontend` based on the given `.env.local.example`
-4. `npm run build` to build the system, and then deploy with your choice of method. You can run `npm run start` to just deploy
-a normal server, or you can create a Dockerfile and make an image to deploy via Docker.
+```shell
+git clone https://github.com/ArjunQuickwork/esg_proj
+cd esg_proj/backends
+pip install -r requirements.txt
+cd migrations
+python insert_types_and_questions.py
+cd ../..
+pkill gunicorn
+backends/.venv/bin/gunicorn backends.main:web_server -c backends/gunicorn.conf.py
+pm2 delete all
+cd frontend
+npm ci
+npm run build
+pm2 start npm   --name next-app   --   run start -- -H 127.0.0.1 -p 3000
+cd ../docs
+npm ci
+npm run build
+pm2 start npm   --name next-app-docs   --   run start -- -H 127.0.0.1 -p 3002
+```
+
+Now, install Caddy (https://caddyserver.com/), and configure it as you need. As per our default configuration, the backend lives on port 3001, the main frontend on 3000 and the docs frontend on 3002.
+
+```shell
+caddy start
+```
+
+
+#### Type 2: Updation with no package changes
+
+```shell
+git pull
+pkill gunicorn
+backends/.venv/bin/gunicorn backends.main:web_server -c backends/gunicorn.conf.py
+pm2 delete all
+cd frontend
+npm run build
+pm2 start npm   --name next-app   --   run start -- -H 127.0.0.1 -p 3000
+cd ../docs
+npm run build
+pm2 start npm   --name next-app-docs   --   run start -- -H 127.0.0.1 -p 3002
+```
+
+#### Type 3: Updating with package changes
+
+```shell
+git pull
+cd backends
+pip install -r requirements.txt
+cd ..
+pkill gunicorn
+backends/.venv/bin/gunicorn backends.main:web_server -c backends/gunicorn.conf.py
+pm2 delete all
+cd frontend
+npm run build
+pm2 start npm   --name next-app   --   run start -- -H 127.0.0.1 -p 3000
+cd ../docs
+npm run build
+pm2 start npm   --name next-app-docs   --   run start -- -H 127.0.0.1 -p 3002
+```
