@@ -4,7 +4,8 @@ import SignoutButton from "@/app/admin/components/SignoutButton";
 
 export default async function UploadPage() {
     const companies = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies`
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies`,
+        { cache: "no-store" }
     );
 
     if (!companies.ok) {
