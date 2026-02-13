@@ -1,0 +1,46 @@
+# The Caddyfile is an easy way to configure your Caddy web server.
+#
+# Unless the file starts with a global options block, the first
+# uncommented line is always the address of your site.
+#
+# To use your own domain name (with automatic HTTPS), first make
+# sure your domain's A/AAAA DNS records are properly pointed to
+# this machine's public IP, then replace ":80" below with your
+# domain name. {
+
+{
+        email esgprogress@gmail.com
+}
+# ----------------------------------------------------
+# Main site
+# Frontend :3000
+# Backend  :3001
+# ----------------------------------------------------
+esgprogress.org, www.esgprogress.org {
+
+        # Frontend
+        reverse_proxy localhost:3000
+}
+
+# ----------------------------------------------------
+# Docs site
+# ----------------------------------------------------
+docs.esgprogress.org {
+        reverse_proxy localhost:3002
+}
+
+# ----------------------------------------------------
+# API
+# ----------------------------------------------------
+api.esgprogress.org {
+
+        rate_limit {
+                zone main {
+                        key {http.request.remote_ip}
+                        events 1000
+                        window 1m
+                }
+        }
+
+        reverse_proxy localhost:3001
+}
